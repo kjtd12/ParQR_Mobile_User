@@ -41,9 +41,10 @@ const ProfileScreen = () => {
 
   const menuItems = [
     { id: '1', label: 'Edit Profile', description: 'Make changes to your profile', onPress: () => navigation.navigate('Profiles',{screen: 'Edit Profile'}) },
-    { id: '2', label: 'My Wallet', description: 'View your wallet activity and balance', onPress: () => navigation.navigate('Profiles',{screen: 'My Wallet'}) },
-    { id: '3', label: 'Security', description: 'Change Password', onPress: changePassword },
-    { id: '4', label: 'Log out', description: 'Log out your account', onPress: handleSignout },
+    { id: '2', label: 'Vehicle List', description: 'View your wallet activity and balance', onPress: () => navigation.navigate('Profiles',{screen: 'Vehicles'}) },
+    { id: '3', label: 'My Wallet', description: 'View your wallet activity and balance', onPress: () => navigation.navigate('Profiles',{screen: 'My Wallet'}) },
+    { id: '4', label: 'Security', description: 'Change Password', onPress: changePassword },
+    { id: '5', label: 'Log out', description: 'Log out your account', onPress: handleSignout },
   ];
 
   const moreItems = [
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 15,
     color: '#213A5C'
   },
   name: {
@@ -149,10 +150,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   menuItemLabel: {
-    fontSize: 18,
+    fontSize: 16,
   },
   menuItemDescription: {
-    fontSize: 16,
+    fontSize: 10,
     color: '#aaa', // set color to light gray
   },
   moreContainer: {

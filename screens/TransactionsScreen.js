@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import { firebase } from '../config';
 
 const ParkingHistoryScreen = () => {
   const [parkingHistory, setParkingHistory] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     const userRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
@@ -17,28 +18,40 @@ const ParkingHistoryScreen = () => {
   }, []);
 
   const renderParkingItem = ({ item }) => {
-    const { start_time, duration, operator_name, price } = item;
-    const end_time = start_time + duration * 60 * 1000;
-    const startDateTime = new Date(start_time).toLocaleTimeString();
-    const endDateTime = new Date(end_time).toLocaleTimeString();
-    const formattedPrice = price ? `$${price.toFixed(2)}` : 'N/A';
+    const { start_time, duration, operator_name, payment } = item;
+    const startDateTime = new Date(start_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const startTime = new Date(start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    const endTime = new Date(start_time + duration * 60 * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    const formattedPrice = parseInt(payment) ? `${parseInt(payment).toFixed(2)} PHP` : 'N/A';
+    
     return (
-      <View style={styles.card}>
-        <Text style={styles.label}>Start time:</Text>
-        <Text style={styles.text}>{startDateTime}</Text>
-        <Text style={styles.label}>End time:</Text>
-        <Text style={styles.text}>{endDateTime}</Text>
-        {operator_name && (
-          <>
-            <Text style={styles.label}>Operator:</Text>
-            <Text style={styles.text}>{operator_name}</Text>
-          </>
-        )}
-        <Text style={styles.label}>Price:</Text>
-        <Text style={styles.text}>{formattedPrice}</Text>
-      </View>
+      <TouchableOpacity>
+        <View style={styles.card}>
+          <View style={styles.row}>
+            <View style={styles.row}>
+              <Image
+                source={{ uri: 'https://via.placeholder.com/30x30' }}
+                style={{ width: 40, height: 40, borderRadius: 10 }}
+              />
+              <View style={{ marginLeft: 15, marginTop: 5 }}>
+                <Text style={styles.date}>{startDateTime}</Text>
+                {operator_name && (
+                  <Text style={styles.operator}>Operator: {operator_name}</Text>
+                )}
+              </View>
+            </View>
+            <View style={styles.row_1}>
+              <View style={{ marginTop: 5, alignItems: 'flex-end' }}>
+                <Text style={[styles.price, { color: '#F3BB01' }]}>{formattedPrice}</Text>
+                <Text style={styles.time}>{startTime} - {endTime}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
     );
   };
+  
 
   if (!parkingHistory.length) {
     return (
@@ -50,6 +63,18 @@ const ParkingHistoryScreen = () => {
 
   return (
     <View style={styles.container}>
+      <View style={[styles.searchContainer, { marginTop: 30 }]}>
+        <Image
+          source={{ uri: 'https://www.freeiconspng.com/uploads/search-icon-png-7.png' }}
+          style={styles.searchIcon}
+        />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search"
+          // onChangeText={handleSearch}
+          // value={searchQuery}
+        />
+      </View>
       <FlatList
         data={parkingHistory}
         renderItem={renderParkingItem}
@@ -63,13 +88,7 @@ const ParkingHistoryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  name: {
-    fontSize: 20,
-    margin: 20,
+    backgroundColor: '#F5F5F5',
   },
   card: {
     backgroundColor: '#fff',
@@ -89,21 +108,61 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  label: {
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  row_1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  row_2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  date: {
     fontWeight: 'bold',
-    marginTop: 8,
+    fontSize: 13,
   },
-  text: {
-    marginBottom: 8,
+  price: {
+    fontWeight: 'bold',
+    fontSize: 13,
   },
-  message: {
-    fontSize: 16,
-    color: '#444',
+  operator: {
+    fontSize: 10,
   },
-  list: {
+  time:{
+    fontSize: 10,
+  },
+  list:{
     flex: 1,
     width: '100%',
   },
+  searchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#EFF1F8',
+    borderRadius: 15,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+    marginVertical: 5,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    tintColor: 'black',
+  },
 });
+
+
 
 export default ParkingHistoryScreen;

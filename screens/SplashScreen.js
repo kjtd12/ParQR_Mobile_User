@@ -28,10 +28,10 @@ const SplashScreen = () => {
         {/* <Text>Landing</Text> */}
         <Image 
             source={require('../assets/welcome.png')}
-            style={{width: 360, height: 300, marginBottom: 20}}
+            style={{width: "100%", height: "45%", marginBottom: 20}}
         />
         <View>
-        <Text style={{fontSize: 23, fontWeight: 'bold', color: '#213A5C', marginBottom: 20}}>
+        <Text style={{fontSize: 24, fontWeight: 'bold', color: '#213A5C', marginBottom: 20}}>
           Welcome, {name.name} 
         </Text>
         </View>
