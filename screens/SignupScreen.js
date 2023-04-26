@@ -43,7 +43,7 @@ const SignupScreen = () => {
         
             await user.sendEmailVerification({
               handleCodeInApp: true,
-              url: 'https://fir-auth-81e51.firebaseapp.com'
+              url: 'https://parqr-8d2fd.firebaseapp.com'
             });
             
             await firebase.firestore().collection('users')

@@ -26,13 +26,12 @@ const ActivityScreen = () => {
           const diff = endTime - now;
           if (diff <= 0) {
             clearInterval(intervalId);
-            setTimeLeft('00:00:00');
-            alert('Your parking time has ended!');
+            setTimeLeft('00 h : 00 m : 00 s');
           } else {
             const hoursLeft = Math.floor(diff / (60 * 60 * 1000)).toString().padStart(2, '0');
             const minutesLeft = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000)).toString().padStart(2, '0');
             const secondsLeft = Math.floor((diff % (60 * 1000)) / 1000).toString().padStart(2, '0');
-            setTimeLeft(`${hoursLeft}:${minutesLeft}:${secondsLeft}`);
+            setTimeLeft(`${hoursLeft} h : ${minutesLeft} m : ${secondsLeft} s`);
           }
         }, 1000);
         return () => clearInterval(intervalId);
@@ -46,6 +45,17 @@ const ActivityScreen = () => {
     return () => userRef.off('value', listener);
   }, [userId]);
 
+  let amountToPay = 0;
+  if (parkingTime && parkingTime.duration > 0) {
+    const { duration } = parkingTime;
+    if (duration <= 180) {
+      amountToPay = 40;
+    } else {
+      const extraTime = Math.ceil((duration - 180) / 60);
+      amountToPay = 40 + (extraTime * 20);
+    }
+  }
+
   if (!parkingTime) {
     return (
       <View style={{ padding: 20 }}>
@@ -55,16 +65,10 @@ const ActivityScreen = () => {
     );
   }
 
-  const { start_time, duration } = parkingTime;
-  const endTime = start_time + duration * 60 * 1000;
-  const endDateTime = new Date(endTime).toLocaleString();
-
   return (
     <View style={{ padding: 20 }}>
-      <Text>Your parking time:</Text>
-      <Text>Start time: {new Date(start_time).toLocaleString()}</Text>
-      <Text>End time: {endDateTime}</Text>
       <Text>Time left: {timeLeft}</Text>
+      <Text>Amount to pay: {amountToPay} PHP</Text>
     </View>
   );
 };

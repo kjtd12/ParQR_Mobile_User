@@ -19,7 +19,7 @@ const ParkingHistoryScreen = () => {
 
   const renderParkingItem = ({ item }) => {
     const { start_time, duration, operator_name, payment } = item;
-    const startDateTime = new Date(start_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const date = new Date(start_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const startTime = new Date(start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     const endTime = new Date(start_time + duration * 60 * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     const formattedPrice = parseInt(payment) ? `${parseInt(payment).toFixed(2)} PHP` : 'N/A';
@@ -34,7 +34,7 @@ const ParkingHistoryScreen = () => {
                 style={{ width: 40, height: 40, borderRadius: 10 }}
               />
               <View style={{ marginLeft: 15, marginTop: 5 }}>
-                <Text style={styles.date}>{startDateTime}</Text>
+                <Text style={styles.date}>{date}</Text>
                 {operator_name && (
                   <Text style={styles.operator}>Operator: {operator_name}</Text>
                 )}
@@ -63,7 +63,7 @@ const ParkingHistoryScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.searchContainer, { marginTop: 30 }]}>
+      <View style={[styles.searchContainer, { marginTop: 40 }]}>
         <Image
           source={{ uri: 'https://www.freeiconspng.com/uploads/search-icon-png-7.png' }}
           style={styles.searchIcon}
