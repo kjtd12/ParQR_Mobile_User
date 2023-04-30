@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal  } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, Image  } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import QRCode from 'react-native-qrcode-svg';
 import { firebase } from '../../config'
@@ -8,7 +8,6 @@ import moment from 'moment';
 const MyWallet = () => {
   const [data, setData] = useState([])
   const [topUpHistory, setTopUpHistory] = useState([])
-  const [showModal, setShowModal] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -31,9 +30,14 @@ const MyWallet = () => {
   const renderListItem = ({ item }) => {
     return (
       <View style={styles.card}>
-        <View>
-          <Text style={styles.cardDate}>{moment(item.datetime, 'MM-DD-YYYYTHH:mm:ss').format('MMM DD, YYYY')}</Text>
-          <Text style={styles.cardTime}>{moment(item.datetime, 'MM-DD-YYYYTHH:mm:ss').format('hh:mm a')}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Image
+            source={ require('../../assets/icons/Wallet.png') }
+          />
+          <View>
+            <Text style={[styles.cardDate, { color: '#606470' }]}>{moment(item.datetime, 'MM-DD-YYYYTHH:mm:ss').format('MMM DD, YYYY')}</Text>
+            <Text style={[styles.cardTime, { color: '#606470' }]}>{moment(item.datetime, 'MM-DD-YYYYTHH:mm:ss').format('hh:mm a')}</Text>
+          </View>
         </View>
         <Text style={[styles.cardAmount, { color: '#F3BB01' }]}>{`+₱${item.amount.toFixed(2)}`}</Text>
       </View>
@@ -43,17 +47,23 @@ const MyWallet = () => {
   return (
     <View style={styles.container}>
       <View style={styles.cardTop}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => navigation.replace('App', { screen: 'Profile' })}>
-            <Text style={styles.cardTopText}>Back</Text>
+        <View style={{ flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between' }}>
+          <TouchableOpacity onPress={() => navigation.replace('App', { screen: 'Profile' })} style={{ flex: 1, alignItems: 'flex-start' }}>
+            <Image
+                source={ require('../../assets/icons/ArrowLeft.png') }
+                style={{ tintColor: 'white' }}
+              />
           </TouchableOpacity>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>My Wallet</Text>
+          </View>
+          <View style={{ flex: 1 }}></View>
         </View>
-        <Text style={[styles.title, styles.cardTopText]}>My Wallet</Text>
-        <Text style={[styles.balance, styles.cardTopText]}>Total Balance</Text>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10, color: '#fff' }}>₱{data.e_wallet?.toFixed(2)}</Text>
-        <TouchableOpacity onPress={() => setShowModal(true)}>
-          <Text style={[styles.cardTopText, { marginLeft: 10 }]}>QR Code</Text>
-        </TouchableOpacity>
+        <View style={{ marginLeft: 20, marginTop: 40 }}>
+          <Text style={[styles.balance, styles.cardTopText, { color: '#aaa', fontWeight: 'normal' }]}>Hi, {data.name}!</Text>
+          <Text style={[styles.balance, styles.cardTopText]}>Total Balance</Text>
+          <Text style={{ fontSize: 42, fontWeight: 'bold', marginBottom: 10, color: '#fff' }}>₱ {data.e_wallet?.toFixed(2)}</Text>
+        </View>
       </View>
       <Text style={[styles.label, { color: '#213A5C' }]}>Top-up History</Text>
       <FlatList
@@ -62,25 +72,7 @@ const MyWallet = () => {
         keyExtractor={(item, index) => index.toString()}
         style={{ flexGrow: 1 }}
       />
-      <Modal
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-        animationType="slide"
-      >
-        <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.modalCloseButton} onPress={() => setShowModal(false)}>
-            <Text style={styles.modalButtonText}>Close</Text>
-          </TouchableOpacity>
-          <View style={styles.card}>
-            <View style={[styles.modalContent]}>
-              <Text style={styles.modalText}>Scan the QR Code for Top-Up</Text>
-              <View style={styles.modalQRCode}>
-                <QRCode value="QR Code Data Here" size={200} />
-              </View>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      
     </View>
   )
 }
@@ -110,7 +102,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    padding: 20,
+    padding: 10,
     margin: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -132,7 +124,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   cardAmount: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   title: {
@@ -140,7 +132,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   balance: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
   },

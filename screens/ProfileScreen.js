@@ -6,8 +6,9 @@ import {useNavigation} from '@react-navigation/core'
 const auth = firebase.auth()
 
 const ProfileScreen = () => {
-  const [data, setData] = useState('')
-  const navigation = useNavigation()
+  const [data, setData] = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
+  const navigation = useNavigation();
 
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
@@ -16,7 +17,7 @@ const ProfileScreen = () => {
     }).catch((error) => {
       alert(error)
     })
-  }
+  };
 
   useEffect(() => { //Get User's Name
     firebase.firestore().collection('users')
@@ -24,11 +25,12 @@ const ProfileScreen = () => {
     .then((snapshot) => {
       if(snapshot.exists){
         setData(snapshot.data())
+        setProfilePicture(snapshot.get('profile_picture'));
       } else {
         console.log('user does not exist')
       }
     })
-  })
+  }, []);
 
   const handleSignout = () => {
       auth
@@ -40,50 +42,86 @@ const ProfileScreen = () => {
   };
 
   const menuItems = [
-    { id: '1', label: 'Edit Profile', description: 'Make changes to your profile', onPress: () => navigation.navigate('Profiles',{screen: 'Edit Profile'}) },
-    { id: '2', label: 'Vehicle List', description: 'View your wallet activity and balance', onPress: () => navigation.navigate('Profiles',{screen: 'Vehicles'}) },
-    { id: '3', label: 'My Wallet', description: 'View your wallet activity and balance', onPress: () => navigation.navigate('Profiles',{screen: 'My Wallet'}) },
-    { id: '4', label: 'Security', description: 'Change Password', onPress: changePassword },
-    { id: '5', label: 'Log out', description: 'Log out your account', onPress: handleSignout },
+    { id: '1', label: 'Edit Profile', description: 'Make changes to your profile', onPress: () => navigation.navigate('Profiles',{screen: 'Edit Profile'}), imagePath: require('../assets/profileIcons/EditProfile.png') },
+    { id: '2', label: 'Vehicle List', description: 'Manage your vehicle Information', onPress: () => navigation.navigate('Profiles',{screen: 'Vehicles'}), imagePath: require('../assets/profileIcons/VehicleList.png') },
+    { id: '3', label: 'My Wallet', description: 'View your wallet activity and balance', onPress: () => navigation.navigate('Profiles',{screen: 'My Wallet'}), imagePath: require('../assets/profileIcons/Wallet.png') },
+    { id: '4', label: 'Security', description: 'Change Password', onPress: changePassword, imagePath: require('../assets/profileIcons/Security.png') },
+    { id: '5', label: 'Log out', description: 'Log out your account', onPress: handleSignout, imagePath: require('../assets/profileIcons/Logout.png') },
   ];
-
+  
   const moreItems = [
-    { id: '1', label: 'Help & Support', onPress: () => navigation.navigate('Profiles',{screen: 'Help & Support'}) },
-    { id: '2', label: 'About App', onPress: () => navigation.navigate('Profiles',{screen: 'About App'}) },
+    { id: '1', label: 'Help & Support', onPress: () => navigation.navigate('Profiles',{screen: 'Help & Support'}), imagePath: require('../assets/profileIcons/Help.png') },
+    { id: '2', label: 'About App', onPress: () => navigation.navigate('Profiles',{screen: 'About App'}), imagePath: require('../assets/profileIcons/AboutApp.png') },
   ];
-
+  
   const renderMenuItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={item.onPress} style={styles.menuItem}>
-        <Text style={styles.menuItemLabel}>{item.label}</Text>
-        <Text style={styles.menuItemDescription}>{item.description}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ backgroundColor: '#F5F5F5', borderRadius: 25, padding: 10 }}>
+              <Image 
+                source={ item.imagePath }
+                style={{ tintColor: '#213A5C', width: 20, height: 20 }}
+              />
+            </View>
+            <View style={{ padding: 5 }}>
+              <Text style={styles.menuItemLabel}>{item.label}</Text>
+              <Text style={styles.menuItemDescription}>{item.description}</Text>
+            </View>
+          </View>
+          <Image
+            source={require('../assets/profileIcons/rightArrow.png')}
+            style={{ margin: 5 }}
+          />
+        </View>
       </TouchableOpacity>
     );
   };
-
+  
   const renderMoreItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={item.onPress} style={styles.menuItem}>
-        <Text style={styles.menuItemLabel}>{item.label}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ backgroundColor: '#F5F5F5', borderRadius: 25, padding: 10 }}>
+              <Image 
+                source={ item.imagePath }
+                style={{ tintColor: '#213A5C', width: 20, height: 20 }}
+              />
+            </View>
+            <View style={{ alignItems: 'center', paddingHorizontal: 5, paddingVertical: 10 }}>
+              <Text style={[styles.menuItemLabel, { alignItems: 'center'  }]}>{item.label}</Text>
+            </View>
+          </View>
+          <Image
+            source={require('../assets/profileIcons/rightArrow.png')}
+            style={{ margin: 5 }}
+          />
+        </View>
       </TouchableOpacity>
     );
   };
+  
+  
+
+  const profileImage = profilePicture ? { uri: profilePicture } : { uri: 'https://via.placeholder.com/150x150.png?text=Profile+Image' };
 
   return (
   <View style={styles.container}>
     <View style={styles.menuContainer}>
       <Text style={styles.title}>Profile</Text>
-      <View style={{ marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', }}>
+      <View style={{ marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 25 }}>
         <Image
-          source={{ uri: 'https://via.placeholder.com/150x150.png?text=Profile+Image' }}
-          style={{ width: 80, height: 80, borderRadius: 40, marginRight: 25 }}
+          source={profileImage && { uri: profileImage.uri }}
+          style={{ width: 100, height: 100, borderRadius: 50, marginRight: 40 }}
         />
         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 30 }}>
           <Text style={styles.name}>{data.name}</Text>
           <Text style={styles.email}>{data.number}</Text>
         </View>
       </View>
-      <View style={{ borderBottomWidth: 1.5, borderColor: '#213A5C', marginBottom: 25 }} />
+      <View style={{ borderBottomWidth: 1.5, borderColor: '#213A5C', marginBottom: 15 }} />
       <FlatList
         data={menuItems}
         renderItem={renderMenuItem}
@@ -110,7 +148,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,
@@ -141,12 +178,13 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '95%',
     marginBottom: 10,
+    marginTop: 40,
   },
   menuList: {
     width: '100%',
   },
   menuItem: {
-    padding: 10,
+    paddingVertical: 10,
     backgroundColor: '#fff',
   },
   menuItemLabel: {

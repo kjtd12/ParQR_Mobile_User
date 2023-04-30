@@ -77,10 +77,10 @@ const VehiclesList = () => {
           <View style={styles.cardActions}>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
               <TouchableOpacity style={styles.cardActionButton} onPress={() => editVehicle(index)}>
-                <Text>Edit</Text>
+                <Image source={ require('../../assets/icons/CarEdit.png') }/>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cardActionButton} onPress={() => deleteVehicle(index)}>
-                <Text>Delete</Text>
+                <Image source={ require('../../assets/icons/CarDelete.png') }/>
               </TouchableOpacity>
             </View>
           </View>
@@ -92,14 +92,22 @@ const VehiclesList = () => {
   return (
     <View style={styles.container}>
       <View style={styles.cardTop}>
-        <TouchableOpacity onPress={() => navigation.replace('App', { screen: 'Profile' })}>
-          <Text>Back</Text>
-        </TouchableOpacity>
-        <Text style={styles.heading}>Vehicles List</Text>
+        <View style={{ flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between' }}>
+          <TouchableOpacity onPress={() => navigation.replace('App', { screen: 'Profile' })} style={{ flex: 1, alignItems: 'flex-start' }}>
+            <Image
+                source={ require('../../assets/icons/ArrowLeft.png') }
+              />
+          </TouchableOpacity>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ color: '#213A5C', fontSize: 16, fontWeight: 'bold' }}>Vehicle List</Text>
+          </View>
+          <View style={{ flex: 1 }}></View>
+        </View>
         <TouchableOpacity style={styles.button} onPress={() => setIsModalVisible(true)}>
           <Text style={styles.buttonText}>Create Vehicle</Text>
         </TouchableOpacity>
       </View>
+      <Text style={{ color: '#213A5C', fontSize: 18, fontWeight: 'bold', marginTop: 15 }}>My Vehicles</Text>
       <FlatList
         data={data}
         renderItem={renderListItem}
@@ -189,7 +197,6 @@ const styles = StyleSheet.create({
     cardActions: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        marginTop: 8,
     },
     cardActionButton: {
         marginLeft: 16,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View, Animated } from 'react-native';
 
 const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
   const [vehicleType, setVehicleType] = useState('');
@@ -23,7 +23,7 @@ const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
   };
 
   return (
-    <Modal visible={visible} animationType="slide" onRequestClose={() => onBackdropPress()}>
+    <Modal visible={visible} animationType="slide" onRequestClose={() => onBackdropPress()} transparent={true}>
       <TouchableOpacity style={styles.backdrop} onPress={() => onBackdropPress()} />
       <View style={styles.modal}>
         <Text style={styles.heading}>Create Vehicle</Text>
@@ -64,7 +64,7 @@ export default VehicleModal;
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.1)',
   },
   modal: {
     position: 'absolute',
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#213A5C',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,

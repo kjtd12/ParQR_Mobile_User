@@ -1,19 +1,104 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import { firebase } from '../config';
+import DropDownPicker from 'react-native-dropdown-picker';
+import DateModal from '../components/DateModal';
+import DetailsModal from '../components/DetailsModal';
 
 const ParkingHistoryScreen = () => {
   const [parkingHistory, setParkingHistory] = useState([]);
-  const [searchText, setSearchText] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [sortCurrentValue, setSortCurrentValue] = useState();
+  const [filterCurrentValue, setFilterCurrentValue] = useState();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [filteredParkingHistory, setFilteredParkingHistory] = useState([]);
+  const [dateModalVisible, setDateModalVisible] = useState(false);
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  const [detailData, setDetailData] = useState([]);
+
+  function filterAndSortTransactions(parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate) {
+    let filteredParkingHistory = [...parkingHistory];
+    
+    switch (filterCurrentValue) {
+      case 'today':
+        filteredParkingHistory = filteredParkingHistory.filter((parkingHistory) => {
+          const transactionDate = new Date(parkingHistory.start_time);
+          const today = new Date();
+          return transactionDate.toDateString() === today.toDateString();
+        });
+        break;
+      case 'sevenDays':
+        filteredParkingHistory = filteredParkingHistory.filter((parkingHistory) => {
+          const transactionDate = new Date(parkingHistory.start_time);
+          const today = new Date();
+          const sevenDaysAgo = new Date(today.setDate(today.getDate() - 7));
+          return transactionDate >= sevenDaysAgo;
+        });
+        break;
+      case 'thirtyDays':
+        filteredParkingHistory = filteredParkingHistory.filter((parkingHistory) => {
+          const transactionDate = new Date(parkingHistory.start_time);
+          const today = new Date();
+          const thirtyDaysAgo = new Date(today.setDate(today.getDate() - 30));
+          return transactionDate >= thirtyDaysAgo;
+        });
+        break;
+      case 'custom':
+        setModalVisible(true)
+        filteredParkingHistory = filteredParkingHistory.filter((parkingHistory) => {
+          const transactionDate = new Date(parkingHistory.start_time);
+          const start = startDate ? new Date(startDate.setDate(startDate.getDate())) : '';
+          const end = endDate ? new Date(endDate.setDate(endDate.getDate())) : '';
+          return transactionDate >= start && transactionDate <= end;
+        });
+        break;
+      default:
+        break;
+    }
+  
+    switch (sortCurrentValue) {
+      case 'ascending':
+        filteredParkingHistory.sort((a, b) => a.operator_name - b.operator_name);
+        break;
+      case 'descending':
+        filteredParkingHistory.sort((a, b) => b.operator_name - a.operator_name);
+        break;
+      case 'newest':
+        filteredParkingHistory.sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
+        break;
+      case 'oldest':
+        filteredParkingHistory.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+        break;
+      default:
+        break;
+    }
+    
+    return filteredParkingHistory;
+  }
+
+  useEffect(() => {
+    const filteredAndSortedTransactions = filterAndSortTransactions(parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate);
+    setFilteredParkingHistory(filteredAndSortedTransactions);
+  }, [parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate]);
+
+  const handleSubmit = (value1, value2) => {
+    setStartDate(value1);
+    setEndDate(value2);
+  }
 
   useEffect(() => {
     const userRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
     const listener = userRef.on('value', (snapshot) => {
       const userData = snapshot.val();
       if (userData && userData.parking_time_history) {
-        setParkingHistory(Object.values(userData.parking_time_history));
+        const reversedHistory = Object.values(userData.parking_time_history).reverse();
+        setParkingHistory(reversedHistory);
       }
     });
+    
     return () => userRef.off('value', listener);
   }, []);
 
@@ -21,11 +106,27 @@ const ParkingHistoryScreen = () => {
     const { start_time, duration, operator_name, payment } = item;
     const date = new Date(start_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const startTime = new Date(start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    const endTime = new Date(start_time + duration * 60 * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    const endTime = new Date(start_time + duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     const formattedPrice = parseInt(payment) ? `${parseInt(payment).toFixed(2)} PHP` : 'N/A';
-    
+  
+    if (
+      searchQuery &&
+      !operator_name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !formattedPrice.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !date.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !startTime.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !endTime.toLowerCase().includes(searchQuery.toLowerCase())
+    ) {
+      return null;
+    }
+
+    console.log(detailModalVisible)
+  
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        setDetailData(item)
+        setDetailModalVisible(true);
+        }}>
         <View style={styles.card}>
           <View style={styles.row}>
             <View style={styles.row}>
@@ -47,20 +148,15 @@ const ParkingHistoryScreen = () => {
               </View>
             </View>
           </View>
+          <DetailsModal isVisible={detailModalVisible} onClose={() => {
+            setDetailModalVisible(false)
+            setDetailData([])
+            }} item={detailData}/>
         </View>
       </TouchableOpacity>
     );
   };
   
-
-  if (!parkingHistory.length) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>You haven't parked yet.</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <View style={[styles.searchContainer, { marginTop: 40 }]}>
@@ -71,12 +167,99 @@ const ParkingHistoryScreen = () => {
         <TextInput
           style={styles.searchInput}
           placeholder="Search"
-          // onChangeText={handleSearch}
-          // value={searchQuery}
+          value={searchQuery}
+          onChangeText={(query) => setSearchQuery(query)}
         />
       </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, marginVertical: 5, position: "relative", zIndex: 10 }}>
+        <View>
+          <DropDownPicker 
+            items={[
+              { label: 'A-Z', value: 'ascending'},
+              { label: 'Z-A', value: 'descending'},
+              { label: 'Newest', value: 'newest'},
+              { label: 'Oldest', value: 'oldest'}
+            ]}
+            containerStyle={{ 
+              backgroundColor: '#fff',
+              borderRadius: 10,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5
+            }}
+            placeholder="Sort"
+            defaultValue={'ascending'}
+            setValue={(value) => setSortCurrentValue(value)}
+            value={sortCurrentValue}
+            open={isSortOpen}
+            setOpen={setIsSortOpen}
+            onChangeItem={item => console.log(item.label, item.value)}
+            showTickIcon={true}
+            style={{ // add this to remove the default border of the DropDownPicker
+              borderWidth: 0,
+              width: 100 // add this to set the width
+            }}
+            dropDownStyle={{ // add this to remove the default border of the DropDownPicker dropdown
+              borderWidth: 0,
+              color: '#213A5C',
+            }}
+            labelStyle={{ // add this to style the label text
+              fontSize: 16,
+              color: '#213A5C',
+            }}
+            arrowIconStyle={{ // add this to style the arrow icon
+              tintColor: '#213A5C',
+            }}
+          />
+        </View>
+        <View>
+          <DropDownPicker 
+            items={[
+              { label: 'Today', value: 'today'},
+              { label: 'Last 7 days', value: 'sevenDays'},
+              { label: 'Last 30 Days', value: 'thirtyDays'},
+              { label: 'Custom', value: 'custom'},
+            ]}
+            containerStyle={{ 
+              backgroundColor: '#fff',
+              borderRadius: 10,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
+            placeholder="Filter"
+            defaultValue={'today'}
+            setValue={(value) => setFilterCurrentValue(value)}
+            value={filterCurrentValue}
+            open={isFilterOpen}
+            setOpen={setIsFilterOpen}
+            onChangeItem={item => console.log(item.label, item.value)}
+            showTickIcon={true}
+            style={{ // add this to remove the default border of the DropDownPicker
+              borderWidth: 0,
+              width: 100  // add this to set the width
+            }}
+            dropDownStyle={{ // add this to remove the default border of the DropDownPicker dropdown
+              borderWidth: 0,
+              color: '#213A5C',
+            }}
+            labelStyle={{ // add this to style the label text
+              fontSize: 16,
+              color: '#213A5C',
+            }}
+            arrowIconStyle={{ // add this to style the arrow icon
+              tintColor: '#213A5C',
+            }}
+          />
+        </View>
+      </View>
+      <DateModal isVisible={dateModalVisible} onClose={() => setDateModalVisible(false)} onSubmit={handleSubmit} />
       <FlatList
-        data={parkingHistory}
+        data={filteredParkingHistory}
         renderItem={renderParkingItem}
         keyExtractor={(item) => item.start_time.toString()}
         style={styles.list}
@@ -117,10 +300,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-  },
-  row_2: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   date: {
     fontWeight: 'bold',

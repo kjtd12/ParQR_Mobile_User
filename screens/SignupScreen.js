@@ -21,11 +21,13 @@ const SignupScreen = () => {
     const [password1, setPassword1] = useState('')
     const [name, setName] = useState('')
     const [number, setNumber] = useState('')
+    const [address, setAddress] = useState('')
     const [errorMsgEmail, setErrorMsgEmail] = useState(null)
     const [errorMsgPassword, setErrorMsgPassword] = useState(null)
     const [errorMsgPassword1, setErrorMsgPassword1] = useState(null)
     const [errorName, setErrorMsgName] = useState(null)
     const [errorNumber, setErrorMsgNumber] = useState(null)
+    const [errorAddress, setErrorMsgAddress] = useState(null)
     const [passWordMatch, setErrorMessagePasswordMatch] = useState(null)
 
     const navigation = useNavigation()
@@ -43,8 +45,10 @@ const SignupScreen = () => {
         
             await user.sendEmailVerification({
               handleCodeInApp: true,
-              url: 'https://parqr-8d2fd.firebaseapp.com'
+              url: 'https://fir-auth-81e51.firebaseapp.com'
             });
+            // fir-auth-81e51.firebaseapp.com
+            // https://parqr-8d2fd.firebaseapp.com
             
             await firebase.firestore().collection('users')
                 .doc(firebase.auth().currentUser.uid)
@@ -53,6 +57,7 @@ const SignupScreen = () => {
                     number,
                     email,
                     e_wallet,
+                    address
             });
             alert('Verification email sent!');
           } catch (error) {
@@ -66,6 +71,7 @@ const SignupScreen = () => {
             setErrorMsgPassword(!password ? 'Password is required' : '');
             setErrorMsgPassword1(!password1 ? 'Password is required' : '');
             setErrorMsgName(!name ? 'Name is required' : '');
+            setErrorMsgAddress(!name ? 'Name is required' : '');
             setErrorMsgNumber(!number? 'Number is required' : undefined);
             if (password.trim() !== password1.trim()) {
                 setErrorMessagePasswordMatch('Passwords do not match');
@@ -106,6 +112,15 @@ const SignupScreen = () => {
                 autoCapitalize = "none"
             />
             {errorNumber && <Text style={styles.error}>{errorNumber}</Text>}
+            <Text style={styles.text}>Address</Text>
+            <TextInput
+                style={styles.textInput}
+                placeholder="Enter your Address"
+                onChangeText={(address) => setAddress(address)}
+                autoCorrect={false}
+                autoCapitalize = "none"
+            />
+            {errorAddress && <Text style={styles.error}>{errorAddress}</Text>}
             <Text style={styles.text}>Email Address</Text>
             <TextInput
                 style={styles.textInput}

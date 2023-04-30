@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback  } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getStorage, ref, uploadBytes, getDownloadURL   } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
@@ -7,11 +7,10 @@ import { Icon } from 'react-native-elements';
 import { firebase } from '../../config';
 
 const EditVehicle = () => {
-    const [vehicleData, setVehicleData] = useState({});
+  const [vehicleData, setVehicleData] = useState({});
   const [newVehicleList, setNewVehicleList] = useState({});
   const navigation = useNavigation();
   const route = useRoute();
-  console.log(vehicleData);
 
   const getVehicleData = useCallback((vehicleIndex) => {
     return firebase.firestore().collection('users')
@@ -42,7 +41,6 @@ const EditVehicle = () => {
   
   const updateVehicle = async () => {
     const { vehicleIndex } = route.params;
-    console.log(vehicleIndex);
     const userRef = firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid);
   
     // Get the current vehicles array from Firestore and set up a listener for real-time updates
@@ -55,7 +53,6 @@ const EditVehicle = () => {
     });
   
     const updatedVehicleData = { ...vehicleData };
-    console.log(newVehicleList);
   
     // Check if any field in updatedVehicleData is undefined
     if (Object.values(updatedVehicleData).some((value) => value === undefined)) {
@@ -74,7 +71,6 @@ const EditVehicle = () => {
   
     // Update the vehicle data in Firestore
     newVehicleList[vehicleIndex] = updatedVehicleData;
-    console.log(newVehicleList);
     await userRef.update({ vehicles: newVehicleList });
   
     // Clean up the listener
@@ -98,14 +94,14 @@ const EditVehicle = () => {
         quality: 1,
       });
   
-      if (result.cancelled) {
+      if (result.canceled) {
         return;
       }
   
       const currentUser = firebase.auth().currentUser.uid;
       const storage = getStorage();
       const imageRef = ref(storage, `vehicle-photos/${currentUser+vehicleIndex}.jpg`);
-      const response = await fetch(result.uri);
+      const response = await fetch(result.assets[0].uri);
       const blob = await response.blob();
       await uploadBytes(imageRef, blob);
   
@@ -140,16 +136,28 @@ const EditVehicle = () => {
     }
   };
   
-  
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{ margin: 30 }}>Back</Text>
-        </TouchableOpacity>
-
+      <View style={styles.cardTop}>
+        <View style={{ marginBottom: 20 }}>
+          <View style={{ flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity onPress={() => navigation.replace('Profiles', { screen: 'Vehicles' })} style={{ flex: 1, alignItems: 'flex-start' }}>
+            <Image
+                source={ require('../../assets/icons/ArrowLeft.png') }
+              />
+            </TouchableOpacity>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <Text style={{ color: '#213A5C', fontSize: 16, fontWeight: 'bold' }}>Edit Vehicle Details</Text>
+            </View>
+            <View style={{ flex: 1 }}></View>
+          </View>
+        </View>
+      </View>
         <View style={styles.horizontalContainer}>
             <TouchableOpacity style={styles.photoButton} onPress={handleUploadPhoto}>
-            <Text style={styles.buttonText}>Add Photo</Text>
+              <Image
+                source={ require('../../assets/icons/CarAddPhoto.png') }
+              />
             </TouchableOpacity>
 
             <View style={styles.verticalContainer}>
@@ -164,39 +172,46 @@ const EditVehicle = () => {
             </View>
             </View>
         </View>
-
-        <Text style={styles.heading}>Edit Vehicle</Text>
-
-        <TextInput
-            value={vehicleData.vehicleType}
-            onChangeText={(value) => setVehicleData({ ...vehicleData, vehicleType: value })}
-            style={styles.input}
-            placeholder="Vehicle Type"
-        />
-
-        <TextInput
-            value={vehicleData.vehicleModel}
-            onChangeText={(value) => setVehicleData({ ...vehicleData, vehicleModel: value })}
-            style={styles.input}
-            placeholder="Vehicle Model"
-        />
-
-        <TextInput
-            value={vehicleData.plateNo}
-            onChangeText={(value) => setVehicleData({ ...vehicleData, plateNo: value })}
-            style={[styles.input]}
-            placeholder="Plate No."
-        />
-
-        <TextInput
-            value={vehicleData.color}
-            onChangeText={(value) => setVehicleData({ ...vehicleData, color: value })}
-            style={styles.input}
-            placeholder="Vehicle Color"
-        />
-
+        <View style={{ width: '80%', marginTop: 10, marginBottom: 60 }}>
+          <View style={{ width: '100%', marginTop: 30, borderBottomWidth: 0.7, borderColor: 'gray' }}>
+            <Text style={{ color: 'gray' }}>Vehicle Type</Text>
+            <TextInput
+                value={vehicleData.vehicleType}
+                onChangeText={(value) => setVehicleData({ ...vehicleData, vehicleType: value })}
+                style={styles.input}
+                placeholder="Vehicle Type"
+            />
+          </View>
+          <View style={{ width: '100%', marginTop: 30, borderBottomWidth: 0.7, borderColor: 'gray' }}>
+            <Text style={{ color: 'gray' }}>Vehicle Model</Text>
+            <TextInput
+                value={vehicleData.vehicleModel}
+                onChangeText={(value) => setVehicleData({ ...vehicleData, vehicleModel: value })}
+                style={styles.input}
+                placeholder="Vehicle Model"
+            />
+          </View>
+          <View style={{ width: '100%', marginTop: 30, borderBottomWidth: 0.7, borderColor: 'gray' }}>
+            <Text style={{ color: 'gray' }}>Vehicle Plate No.</Text>
+            <TextInput
+                value={vehicleData.plateNo}
+                onChangeText={(value) => setVehicleData({ ...vehicleData, plateNo: value })}
+                style={[styles.input]}
+                placeholder="Plate No."
+            />
+          </View>
+          <View style={{ width: '100%', marginTop: 30, borderBottomWidth: 0.7, borderColor: 'gray' }}>
+            <Text style={{ color: 'gray' }}>Vehicle Color</Text>
+            <TextInput
+                value={vehicleData.color}
+                onChangeText={(value) => setVehicleData({ ...vehicleData, color: value })}
+                style={styles.input}
+                placeholder="Vehicle Color"
+            />
+          </View>
+        </View>
         <TouchableOpacity style={styles.button} onPress={updateVehicle}>
-            <Text style={styles.buttonText}>Save Changes</Text>
+            <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
     </View>
   );
@@ -212,29 +227,26 @@ const styles = StyleSheet.create({
       marginBottom: 30,
     },
     input: {
-      borderWidth: 1,
-      borderColor: '#999',
-      padding: 10,
-      marginBottom: 20,
-      width: '80%',
+      marginBottom: 5,
     },
     button: {
-      backgroundColor: '#007AFF',
+      backgroundColor: '#F3BB01',
       borderRadius: 5,
-      padding: 10,
+      paddingVertical: 20,
+      paddingHorizontal: 70
     },
     buttonText: {
-      color: '#FFF',
-      fontSize: 18,
+      color: '#213A5C',
+      fontWeight: 'bold',
+      fontSize: 18
     },
     photoButton: {
-      backgroundColor: '#007AFF',
       borderRadius: 5,
       padding: 10,
-      marginRight: 15,
-      width: 100,
-        height: 100,
-        alignItems: 'center',
+      marginRight: 30,
+      width: 112,
+      height: 112,
+      alignItems: 'center',
       justifyContent: 'center',
     },
     horizontalContainer: {
@@ -254,14 +266,21 @@ const styles = StyleSheet.create({
     },
     plateNoContainer: {
         backgroundColor: '#213A5C',
-        padding: 10,
+        paddingHorizontal: 30,
+        paddingVertical: 20,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
     },
     plateNoText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 24,
+    },
+    cardTop: {
+      marginTop: 40,
+      borderRadius: 7,
+      padding: 16,
+      width: '100%'
     },
   });
 
