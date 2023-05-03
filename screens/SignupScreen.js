@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native'
 import {useNavigation} from '@react-navigation/core'
 import React, {useState} from 'react'
 import { firebase } from '../config'
@@ -41,11 +41,10 @@ const SignupScreen = () => {
               password
             );
             const user = userCredential.user;
-            console.log(user.email);
         
             await user.sendEmailVerification({
               handleCodeInApp: true,
-              url: 'https://fir-auth-81e51.firebaseapp.com'
+              url: 'https://parqr-8d2fd.firebaseapp.com'
             });
             // fir-auth-81e51.firebaseapp.com
             // https://parqr-8d2fd.firebaseapp.com
@@ -92,7 +91,13 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
-        <Text style={[{fontWeight: 'bold', fontSize: 15}, styles.text]}>
+        <TouchableOpacity onPress={() => navigation.replace('Landing')}>
+            <Image
+                source={ require('../assets/profileIcons/left.png') }
+                style={{ tintColor: 'white', position: 'absolute', top: -100, right: 150 }}
+              />
+          </TouchableOpacity>
+        <Text style={[{fontWeight: 'bold', fontSize: 20, color: '#F3BB01', fontWeight: 'bold'}]}>
             Account Sign Up
         </Text>
         <View style = {[{marginTop: 10}, styles.inputContainer]}>
@@ -156,8 +161,15 @@ const SignupScreen = () => {
         <TouchableOpacity
             onPress={handleSignUp}
         >
-            <Text style={[styles.button, {fontWeight: 'bold', fontSize: 12, marginTop: 20}, styles.text]}>Sign Up</Text>
+            <Text style={[styles.button, {fontWeight: 'bold', fontSize: 12, marginTop: 20, paddingHorizontal: 150}, styles.text]}>Sign Up</Text>
         </TouchableOpacity>
+        <View style={styles.line} />
+        <View style={{ flexDirection: 'row' }}>
+            <Text style={{ color: 'white' }}>Already have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.replace('Login')}>
+                <Text style={{ color: '#F3BB01' }}> Login</Text>
+            </TouchableOpacity>
+        </View>
     </View>
   )
 }
@@ -185,8 +197,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#F3BB01',
         width: '100%',
         padding: 15,
-        borderRadius: 10,
+        borderRadius: 5,
         alignItems: 'center',
+    },
+    line: {
+        height: 1,
+        width: '80%',
+        backgroundColor: 'white',
+        marginVertical: 10,
     },
     text: {
         color: 'white'

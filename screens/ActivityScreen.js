@@ -54,8 +54,9 @@ const ActivityScreen = () => {
   if (elapsedTime <= 180 * 60 * 1000) {
     if (elapsedTime == 0){
       amountToPay = 0;
-    } 
-    amountToPay = minimumCharge;
+    } else {
+      amountToPay = minimumCharge;
+    }
   } else {
     const extraTime = Math.ceil((elapsedTime - 180 * 60 * 1000) / (60 * 60 * 1000));
     amountToPay = minimumCharge + extraTime * ratePerHour;

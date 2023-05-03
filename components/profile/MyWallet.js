@@ -18,7 +18,7 @@ const MyWallet = () => {
       .onSnapshot((snapshot) => {
         if (snapshot.exists) {
           setData(snapshot.data());
-          setTopUpHistory(snapshot.data().top_up_history.slice().reverse())
+          setTopUpHistory(snapshot.data().top_up_history ? snapshot.data().top_up_history.slice().reverse() : [])
         } else {
           console.log('user does not exist');
         }

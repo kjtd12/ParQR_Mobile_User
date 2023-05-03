@@ -116,9 +116,11 @@ const LoginScreen = () => {
                     </Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={forgetPassword}>
-                <Text style={[styles.signUpText, {alignItems: 'flex-end'}]}>Forgot Password?</Text>
-            </TouchableOpacity>
+            <View style={{ alignItems: 'flex-end' }}>
+                <TouchableOpacity onPress={forgetPassword}>
+                    <Text style={[styles.signUpText, {alignItems: 'flex-end'}]}>Forgot Password?</Text>
+                </TouchableOpacity>
+            </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity 
                     onPress={handleLogin}
@@ -150,7 +152,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 10,
         borderRadius: 5,
-        marginTop: 5
+        marginTop: 5,
+        borderWidth: 2,
+        borderColor: '#213A5C'
     },
     buttonContainer: {
         width: '60%',
@@ -177,7 +181,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     signUpText: {
-        marginTop: 20,
         fontSize: 16,
         color: '#888888',
     },

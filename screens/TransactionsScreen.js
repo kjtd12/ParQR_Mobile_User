@@ -119,8 +119,6 @@ const ParkingHistoryScreen = () => {
     ) {
       return null;
     }
-
-    console.log(detailModalVisible)
   
     return (
       <TouchableOpacity onPress={() => {
@@ -131,7 +129,7 @@ const ParkingHistoryScreen = () => {
           <View style={styles.row}>
             <View style={styles.row}>
               <Image
-                source={{ uri: 'https://via.placeholder.com/30x30' }}
+                source={ require('../assets/icons/CarIcon.png') }
                 style={{ width: 40, height: 40, borderRadius: 10 }}
               />
               <View style={{ marginLeft: 15, marginTop: 5 }}>
@@ -159,9 +157,12 @@ const ParkingHistoryScreen = () => {
   
   return (
     <View style={styles.container}>
-      <View style={[styles.searchContainer, { marginTop: 40 }]}>
+      <View style={{ alignItems: 'center' }}>
+          <Text style={{ color: '#213A5C', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginTop: 40 }}>Transaction History</Text>
+      </View>
+      <View style={[styles.searchContainer]}>
         <Image
-          source={{ uri: 'https://www.freeiconspng.com/uploads/search-icon-png-7.png' }}
+          source={ require('../assets/transactionIcons/Search.png') }
           style={styles.searchIcon}
         />
         <TextInput
@@ -195,7 +196,7 @@ const ParkingHistoryScreen = () => {
             value={sortCurrentValue}
             open={isSortOpen}
             setOpen={setIsSortOpen}
-            onChangeItem={item => console.log(item.label, item.value)}
+            
             showTickIcon={true}
             style={{ // add this to remove the default border of the DropDownPicker
               borderWidth: 0,

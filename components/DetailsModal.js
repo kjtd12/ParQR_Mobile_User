@@ -27,6 +27,7 @@ const DetailsModal = ({ isVisible, onClose, item }) => {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.1)', }}>
             <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20, width: '90%' }}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#213A5C', marginBottom: 20 }}>Transaction Details</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#213A5C', padding: 20,  }}>Transfer from {item.number ? item.number : item.user_name} to ParQr Pay</Text>
                 <View>
                     <View style={styles.detailLine}>
                         <Text style={styles.firstText}>Customers's Name</Text>
