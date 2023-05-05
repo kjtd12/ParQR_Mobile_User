@@ -33,36 +33,40 @@ const SignupScreen = () => {
     const navigation = useNavigation()
 
     const registerUser = async (email, password, name, number) => {
-
         const e_wallet = 0;
         try {
-            const userCredential = await auth.createUserWithEmailAndPassword(
-              email,
-              password
-            );
-            const user = userCredential.user;
-        
-            await user.sendEmailVerification({
-              handleCodeInApp: true,
-              url: 'https://parqr-8d2fd.firebaseapp.com'
-            });
-            // fir-auth-81e51.firebaseapp.com
-            // https://parqr-8d2fd.firebaseapp.com
-            
-            await firebase.firestore().collection('users')
-                .doc(firebase.auth().currentUser.uid)
+          const userCredential = await auth.createUserWithEmailAndPassword(
+            email,
+            password
+          );
+          const user = userCredential.user;
+      
+          await user.sendEmailVerification({
+            handleCodeInApp: true,
+            url: 'https://parqr-8d2fd.firebaseapp.com'
+          });
+      
+          firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              const uid = user.uid;
+              firebase.firestore().collection('users')
+                .doc(uid)
                 .set({
-                    name,
-                    number,
-                    email,
-                    e_wallet,
-                    address
-            });
-            alert('Verification email sent!');
-          } catch (error) {
-            alert(error.message);
-          }
+                  name,
+                  number,
+                  email,
+                  e_wallet,
+                  address
+                });
+            }
+          });
+      
+          alert('Verification email sent!');
+        } catch (error) {
+          alert(error.message);
+        }
     }
+      
 
     const handleSignUp = () => {
         if (!email || !password || !password1 || !name || !number) {
@@ -112,6 +116,7 @@ const SignupScreen = () => {
             <Text style={styles.text}>Phone Number</Text>
             <TextInput
                 style={styles.textInput}
+                placeholder="Enter your Phone Number  (Ex: 09561566338)"
                 onChangeText={(number) => setNumber(number)}
                 autoCorrect={false}
                 autoCapitalize = "none"
@@ -139,7 +144,7 @@ const SignupScreen = () => {
             <Text style={styles.text}>Password</Text>
             <TextInput
                 style={styles.textInput}
-                placeholder=""
+                placeholder="Enter your password"
                 onChangeText={(password) => setPassword(password)}
                 autoCorrect={false}
                 autoCapitalize = "none"
@@ -149,7 +154,7 @@ const SignupScreen = () => {
             <Text style={styles.text}>Confirm Password</Text>
             <TextInput
                 style={styles.textInput}
-                placeholder=""
+                placeholder="Enter your password again to Verify"
                 onChangeText={(password1) => setPassword1(password1)}
                 autoCorrect={false}
                 autoCapitalize = "none"
