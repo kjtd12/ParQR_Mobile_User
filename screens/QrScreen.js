@@ -59,10 +59,12 @@ const QrScreen = () => {
     const unsubscribe = userRef.onSnapshot(snapshot => {
       if (snapshot.exists) {
         const status = snapshot.get('paymentStatus');
+        console.log(status);
         const balance = snapshot.get('balance')
         setStatus(status);
         setBalance(balance)
-        if (status !== null) {
+        if (status == null || status == undefined) {
+        } else {
           if (!status) {
             setPopUpisVisible(true);
             setPopUpisVisible1(false);

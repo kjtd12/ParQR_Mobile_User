@@ -34,6 +34,7 @@ const SignupScreen = () => {
 
     const registerUser = async (email, password, name, number) => {
         const e_wallet = 0;
+        const paymentStatus = null
         try {
           const userCredential = await auth.createUserWithEmailAndPassword(
             email,
@@ -56,7 +57,8 @@ const SignupScreen = () => {
                   number,
                   email,
                   e_wallet,
-                  address
+                  address,
+                  paymentStatus
                 });
             }
           });
