@@ -27,27 +27,31 @@ const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
       <TouchableOpacity style={styles.backdrop} onPress={() => onBackdropPress()} />
       <View style={styles.modal}>
         <Text style={styles.heading}>Create Vehicle</Text>
+        <Text style={{ padding: 5 }}>Vehicle Type: </Text>
         <TextInput
           style={styles.input}
-          placeholder="Vehicle Type"
+          placeholder="Vehicle Type Here..."
           value={vehicleType}
           onChangeText={(value) => setVehicleType(value)}
         />
+        <Text style={{ padding: 5 }}>Vehicle Model: </Text>
         <TextInput
           style={styles.input}
-          placeholder="Vehicle Model"
+          placeholder="Vehicle Model Here..."
           value={vehicleModel}
           onChangeText={(value) => setVehicleModel(value)}
         />
+        <Text style={{ padding: 5 }}>Plate No: </Text>
         <TextInput
           style={styles.input}
-          placeholder="Plate No"
+          placeholder="Plate No. Here..."
           value={plateNo}
           onChangeText={(value) => setPlateNo(value)}
         />
+        <Text style={{ padding: 5 }}>Color: </Text>
         <TextInput
           style={styles.input}
-          placeholder="Color"
+          placeholder="Color Here..."
           value={color}
           onChangeText={(value) => setColor(value)}
         />
