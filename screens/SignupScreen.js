@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'reac
 import {useNavigation} from '@react-navigation/core'
 import React, {useState} from 'react'
 import { firebase } from '../config'
+import { database } from 'firebase/compat/database';
+
+const db = firebase.database().ref('user_register_count');
 
 const auth = firebase.auth()
 
@@ -62,6 +65,9 @@ const SignupScreen = () => {
                 });
             }
           });
+
+            const today = new Date().toISOString().slice(0, 10);
+            db.child(today).transaction((count) => (count || 0) + 1);
       
           alert('Verification email sent!');
         } catch (error) {
