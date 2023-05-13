@@ -7,10 +7,15 @@ const ActivityScreen = () => {
   const [parkingTime, setParkingTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [userId, setUserId] = useState('')
+  const [floatPrice, setFloatPrice] = useState(0);
 
   useEffect(() => { //Get User's Name
     const auth = firebase.auth();
     setUserId(auth.currentUser.uid);
+  })
+
+  useEffect(() => {
+
   })
 
   useEffect(() => {
@@ -47,22 +52,35 @@ const ActivityScreen = () => {
     return `${hours} h : ${minutes} m : ${seconds} s` ;
   }
 
-  let amountToPay = 0;
-  const ratePerHour = 20;
-  const minimumCharge = 40;
+  const paymentSettingsRef = firebase.database().ref('parking_payment_settings');
+  let initialHours;
+  let initialPayment;
+  let incrementalPayment;
 
-  if (elapsedTime <= 180 * 60 * 1000) {
-    if (elapsedTime == 0){
-      amountToPay = 0;
+  paymentSettingsRef.once('value', (snapshot) => {
+    const parkingPaymentData = snapshot.val();
+    initialHours = parseInt(parkingPaymentData.initial_hours);
+    initialPayment = parseInt(parkingPaymentData.initial_payment);
+    incrementalPayment = parseInt(parkingPaymentData.incremental_payment);
+
+    let amountToPay = 0;
+    const ratePerHour = incrementalPayment;
+    const minimumCharge = initialPayment;
+
+    if (elapsedTime <= initialHours * 60 * 60 * 1000) {
+      if (elapsedTime === 0) {
+        amountToPay = 0;
+      } else {
+        amountToPay = minimumCharge;
+      }
     } else {
-      amountToPay = minimumCharge;
+      const extraTime = Math.ceil((elapsedTime - initialHours * 60 * 60 * 1000) / (60 * 60 * 1000));
+      amountToPay = minimumCharge + extraTime * ratePerHour;
     }
-  } else {
-    const extraTime = Math.ceil((elapsedTime - 180 * 60 * 1000) / (60 * 60 * 1000));
-    amountToPay = minimumCharge + extraTime * ratePerHour;
-  }
 
-  var floatPrice = parseFloat(amountToPay).toFixed(2);
+    setFloatPrice(parseFloat(amountToPay).toFixed(2));
+  });
+
 
   if (!parkingTime) {
   
