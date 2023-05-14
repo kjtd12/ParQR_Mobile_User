@@ -15,10 +15,6 @@ const ActivityScreen = () => {
   })
 
   useEffect(() => {
-
-  })
-
-  useEffect(() => {
     const userRef = firebase.database().ref('users/' + userId);
     const parkingTimeRef = userRef.child('parking_time');
     let intervalId;
