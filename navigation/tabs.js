@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
+
 const CustomTabBarButton = ({children, onPress}) => (
     <TouchableOpacity
         style={{
@@ -97,24 +98,29 @@ const Tabs = () => {
                 )
                 }}
             />
-            <Tab.Screen name="Qr" component={QrScreen}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({focused}) => (
+            <Tab.Screen
+                    name="Qr"
+                    options={{
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) => (
                         <Image
                             source={require('../assets/icons/Qr.png')}
-                            style={{ 
-                                width: 32, 
-                                height: 32,
-                                tintColor: focused ? "#F3BB01" : "white"
+                            style={{
+                            width: 32,
+                            height: 32,
+                            tintColor: focused ? "#F3BB01" : "white"
                             }}
-                        />  
-                    ),
-                    tabBarButton: (props) => (
-                        <CustomTabBarButton {...props}/>
-                    )
-                }}
-            />
+                        />
+                        ),
+                        tabBarButton: (props) => (
+                        <CustomTabBarButton {...props} />
+                        )
+                    }}
+                    >
+                    {({ navigation }) => (
+                        <QrScreen navigation={navigation} />
+                    )}
+            </Tab.Screen>
             <Tab.Screen name="TransAction" component={TransactionsScreen}
                 options={{ 
                 headerShown: false,

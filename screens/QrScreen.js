@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Image } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import QRCode from 'react-native-qrcode-svg';
 import { firebase } from '../config'
+import { useIsFocused } from '@react-navigation/native';
 
-const QrScreen = () => {
+const QrScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  const initialVisibilityRef = useRef(true);
   const [currentUser, setCurrentUser] = useState(null);
   const [userUid, setUserUid] = useState(null);
   const [carPlate, setCarPlate] = useState(null);
@@ -29,6 +32,23 @@ const QrScreen = () => {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    setIsModalOpen(true); // Set the initial visibility of the modal to true
+  
+    return () => {
+      setIsModalOpen(false); // Reset the visibility of the modal to false when the screen is unmounted
+    };
+  }, []);
+  
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setIsModalOpen(true); // Set the visibility of the modal to true when the screen is re-focused
+    });
+  
+    return unsubscribe;
+  }, [navigation]);
+  
 
   useEffect(() => { //Get User's Name
     firebase.firestore().collection('users')
@@ -104,19 +124,19 @@ const QrScreen = () => {
         style={{ padding: 20, borderColor: 'black', borderWidth: 1, borderRadius: 10 }}
         onPress={() => setIsModalOpen(true)}
       >
-        <Text>Open QR Code</Text>
+        <Text>Re-Open QR Code</Text>
       </TouchableOpacity>
     </View>
     <Modal visible={isModalOpen} style={{ backgroundColor: '#213A5C' }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#213A5C' }}>
-        <TouchableOpacity onPress={() => setIsModalOpen(false)} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
+        <TouchableOpacity onPress={() => {setIsModalOpen(false)}} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
           <Image
             source={require('../assets/icons/ArrowLeft.png')}
             style={{ tintColor: 'white', height: 30, width: 30 }}
           />
         </TouchableOpacity>
         <Text style={{ position: 'absolute', top: 40, fontSize: 20, color: 'white', paddingTop: 5 }}>My QR Code</Text>
-        <TouchableOpacity onPress={() => setIsModalOpen(false)} style={{ position: 'absolute', top: 40, right: 40, paddingTop: 10 }}>
+        <TouchableOpacity onPress={() => {setIsModalOpen(false)}} style={{ position: 'absolute', top: 40, right: 40, paddingTop: 10 }}>
           <Image
             source={require('../assets/transactionIcons/close.png')}
             style={{ tintColor: 'white', height: 15, width: 15 }}
@@ -159,9 +179,9 @@ const QrScreen = () => {
           <Text style={{ marginBottom: 10, color: 'gray'}}>operator</Text>
           <Text style={{ marginBottom: 10, fontSize: 16, color: '#213A5C' }}>Amount to be paid:</Text>
           <Text style={{ marginBottom: 20, fontSize: 16, color: '#213A5C' }}>Php {parseFloat(balance).toFixed(2)}</Text>
-          <TouchableOpacity style={{ backgroundColor: '#F3BB01', paddingVertical: 15, paddingHorizontal: 50, borderRadius: 5 }} onPress={() => setPopUpisVisible(false)}>
+          {/* <TouchableOpacity style={{ backgroundColor: '#F3BB01', paddingVertical: 15, paddingHorizontal: 50, borderRadius: 5 }} onPress={() => setPopUpisVisible(false)}>
             <Text style={{ color: 'white', fontSize: 20 }}>Okay</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </Modal>

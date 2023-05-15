@@ -4,24 +4,28 @@ import React from 'react'
 const DetailsModal = ({ isVisible, onClose, item }) => {
 
     const { start_time, duration, operator_name, payment } = item;
-    const date = new Date(start_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    const startTime = new Date(start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    const endTime = new Date(start_time + duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    const formattedPrice = parseInt(payment) ? `${parseInt(payment).toFixed(2)}` : 'N/A';
-    const start = new Date(start_time);
-    const end = new Date(start_time + duration * 1000);
-    const durationInSeconds = (end - start) / 1000;
+    const startTimeDate = new Date(start_time);
+    const endTimeDate = new Date(start_time + duration * 1000);
+
+    const date = startTimeDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const startTime = startTimeDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    const endTime = endTimeDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+    const parsedPayment = parseInt(payment);
+    const formattedPrice = parsedPayment ? parsedPayment.toFixed(2) : 'N/A';
+
+    const durationInSeconds = (endTimeDate - startTimeDate) / 1000;
     const durationInMinutes = durationInSeconds / 60;
     const durationInHours = durationInMinutes / 60;
 
     let durationText;
     if (durationInHours < 1) {
-        const remainingSeconds = Math.round(durationInSeconds % 60);
-        durationText = `0 mins ${remainingSeconds} secs`;
+    const remainingSeconds = Math.round(durationInSeconds % 60);
+    durationText = `0 mins ${remainingSeconds} secs`;
     } else {
-        durationText = `${durationInHours} hours ${durationInMinutes % 60} min`
+    durationText = `${durationInHours} hours ${durationInMinutes % 60} min`;
     }
-
+    
   return (
     <Modal visible={isVisible} transparent={true}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.1)', }}>

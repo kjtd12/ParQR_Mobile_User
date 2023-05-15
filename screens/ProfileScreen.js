@@ -1,13 +1,15 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Modal } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { firebase } from '../config'
 import {useNavigation} from '@react-navigation/core'
+import FeedBackModal from '../components/FeedBackModal'
 
 const auth = firebase.auth()
 
 const ProfileScreen = () => {
   const [data, setData] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
+  const [feedbackVisible, setFeedbackVisible] = useState(false);
   const navigation = useNavigation();
 
   const changePassword = () => {
@@ -50,7 +52,8 @@ const ProfileScreen = () => {
   ];
   
   const moreItems = [
-    { id: '1', label: 'About App', onPress: () => navigation.navigate('Profiles',{screen: 'About App'}), imagePath: require('../assets/profileIcons/AboutApp.png') },
+    { id: '1', label: 'Feedback', onPress: () => setFeedbackVisible(true), imagePath: require('../assets/profileIcons/AboutApp.png') },
+    { id: '2', label: 'About App', onPress: () => navigation.navigate('Profiles',{screen: 'About App'}), imagePath: require('../assets/profileIcons/AboutApp.png') },
   ];
   
   const renderMenuItem = ({ item }) => {
@@ -120,6 +123,19 @@ const ProfileScreen = () => {
           <Text style={styles.email}>{data.number}</Text>
         </View>
       </View>
+      <Modal visible={feedbackVisible} transparent={true}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.1)', }}>
+          <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20, width: '90%' }}>
+            <TouchableOpacity onPress={() => {setFeedbackVisible(false)}}>
+              <Image
+                  source={ require('../assets/icons/ArrowLeft.png') }
+                  style={{ marginBottom: 10 }}
+                />
+            </TouchableOpacity>
+            <FeedBackModal userId={firebase.auth().currentUser.uid}/>
+          </View>
+        </View>
+      </Modal>
       <View style={{ borderBottomWidth: 1.5, borderColor: '#213A5C', marginBottom: 15 }} />
       <FlatList
         data={menuItems}

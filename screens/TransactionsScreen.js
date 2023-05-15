@@ -47,7 +47,7 @@ const ParkingHistoryScreen = () => {
         });
         break;
       case 'custom':
-        setModalVisible(true)
+        setDateModalVisible(true)
         filteredParkingHistory = filteredParkingHistory.filter((parkingHistory) => {
           const transactionDate = new Date(parkingHistory.start_time);
           const start = startDate ? new Date(startDate.setDate(startDate.getDate())) : '';
@@ -61,10 +61,10 @@ const ParkingHistoryScreen = () => {
   
     switch (sortCurrentValue) {
       case 'ascending':
-        filteredParkingHistory.sort((a, b) => a.operator_name - b.operator_name);
+        filteredParkingHistory.sort((a, b) => a.operator_name.localeCompare(b.operator_name));
         break;
       case 'descending':
-        filteredParkingHistory.sort((a, b) => b.operator_name - a.operator_name);
+        filteredParkingHistory.sort((a, b) => b.operator_name.localeCompare(a.operator_name));
         break;
       case 'newest':
         filteredParkingHistory.sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
@@ -120,38 +120,46 @@ const ParkingHistoryScreen = () => {
       return null;
     }
   
+    const handlePress = () => {
+      setDetailData(item);
+      setDetailModalVisible(true);
+    };
+  
     return (
-      <TouchableOpacity onPress={() => {
-        setDetailData(item)
-        setDetailModalVisible(true);
-        }}>
-        <View style={styles.card}>
-          <View style={styles.row}>
+      <>
+        <TouchableOpacity onPress={handlePress}>
+          <View style={styles.card}>
             <View style={styles.row}>
-              <Image
-                source={ require('../assets/icons/CarIcon.png') }
-                style={{ width: 40, height: 40, borderRadius: 10 }}
-              />
-              <View style={{ marginLeft: 15, marginTop: 5 }}>
-                <Text style={styles.date}>{date}</Text>
-                {operator_name && (
-                  <Text style={styles.operator}>Operator: {operator_name}</Text>
-                )}
+              <View style={styles.row}>
+                <Image
+                  source={require('../assets/icons/CarIcon.png')}
+                  style={{ width: 40, height: 40, borderRadius: 10 }}
+                />
+                <View style={{ marginLeft: 15, marginTop: 5 }}>
+                  <Text style={styles.date}>{date}</Text>
+                  {operator_name && (
+                    <Text style={styles.operator}>Operator: {operator_name}</Text>
+                  )}
+                </View>
               </View>
-            </View>
-            <View style={styles.row_1}>
-              <View style={{ marginTop: 5, alignItems: 'flex-end' }}>
-                <Text style={[styles.price, { color: '#F3BB01' }]}>{formattedPrice}</Text>
-                <Text style={styles.time}>{startTime} - {endTime}</Text>
+              <View style={styles.row_1}>
+                <View style={{ marginTop: 5, alignItems: 'flex-end' }}>
+                  <Text style={[styles.price, { color: '#F3BB01' }]}>{formattedPrice}</Text>
+                  <Text style={styles.time}>{startTime} - {endTime}</Text>
+                </View>
               </View>
             </View>
           </View>
-          <DetailsModal isVisible={detailModalVisible} onClose={() => {
-            setDetailModalVisible(false)
-            setDetailData([])
-            }} item={detailData}/>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <DetailsModal
+          isVisible={detailModalVisible}
+          onClose={() => {
+            setDetailModalVisible(false);
+            setDetailData([]);
+          }}
+          item={detailData}
+        />
+      </>
     );
   };
   
