@@ -71,7 +71,7 @@ const ActivityScreen = () => {
       }
     } else {
       const extraTime = Math.ceil((elapsedTime - initialHours * 60 * 60 * 1000) / (60 * 60 * 1000));
-      amountToPay = minimumCharge + extraTime * ratePerHour;
+      amountToPay = minimumCharge + (extraTime * ratePerHour);
     }
 
     setFloatPrice(parseFloat(amountToPay).toFixed(2));

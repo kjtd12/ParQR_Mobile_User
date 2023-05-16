@@ -15,17 +15,17 @@ const DetailsModal = ({ isVisible, onClose, item }) => {
     const formattedPrice = parsedPayment ? parsedPayment.toFixed(2) : 'N/A';
 
     const durationInSeconds = (endTimeDate - startTimeDate) / 1000;
-    const durationInMinutes = durationInSeconds / 60;
-    const durationInHours = durationInMinutes / 60;
+    const durationInMinutes = Math.floor(durationInSeconds / 60);
+    const durationInHours = Math.floor(durationInMinutes / 60);
 
     let durationText;
     if (durationInHours < 1) {
-    const remainingSeconds = Math.round(durationInSeconds % 60);
-    durationText = `0 mins ${remainingSeconds} secs`;
+        const remainingSeconds = Math.round(durationInSeconds % 60);
+        durationText = `0 mins ${remainingSeconds} secs`;
     } else {
-    durationText = `${durationInHours} hours ${durationInMinutes % 60} min`;
+        durationText = `${durationInHours} hours ${durationInMinutes % 60} min`;
     }
-    
+
   return (
     <Modal visible={isVisible} transparent={true}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.1)', }}>
