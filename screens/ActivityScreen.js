@@ -70,7 +70,7 @@ const ActivityScreen = () => {
         amountToPay = minimumCharge;
       }
     } else {
-      const extraTime = Math.ceil((elapsedTime - initialHours * 60 * 60 * 1000) / (60 * 60 * 1000));
+      const extraTime = Math.floor((elapsedTime - initialHours * 60 * 60 * 1000) / (60 * 60 * 1000));
       amountToPay = minimumCharge + (extraTime * ratePerHour);
     }
 
