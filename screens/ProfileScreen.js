@@ -1,4 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Modal } from 'react-native'
+import { Dimensions } from 'react-native';
+const { width, height } = Dimensions.get('window');
 import React, {useState, useEffect} from 'react'
 import { firebase } from '../config'
 import {useNavigation} from '@react-navigation/core'
@@ -159,25 +161,27 @@ const ProfileScreen = () => {
 
 export default ProfileScreen
 
+const scalingFactor = 0.85;
+
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: Math.round(24 * scalingFactor),
     fontWeight: 'bold',
-    marginBottom: 15,
-    color: '#213A5C'
+    marginBottom: Math.round(15 * scalingFactor),
+    color: '#213A5C',
   },
   name: {
-    fontSize: 20,
+    fontSize: Math.round(20 * scalingFactor),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: Math.round(10 * scalingFactor),
   },
   email: {
-    fontSize: 16,
-    marginBottom: 30,
+    fontSize: Math.round(16 * scalingFactor),
+    marginBottom: Math.round(30 * scalingFactor),
   },
   menuContainer: {
     backgroundColor: '#fff',
@@ -190,24 +194,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 2.84,
     elevation: 3,
-    padding: 15,
+    padding: Math.round(15 * scalingFactor),
     width: '95%',
-    marginBottom: 10,
-    marginTop: 40,
+    marginBottom: Math.round(10 * scalingFactor),
+    marginTop: Math.round(40 * scalingFactor),
   },
   menuList: {
     width: '100%',
   },
   menuItem: {
-    paddingVertical: 10,
+    paddingVertical: Math.round(10 * scalingFactor),
     backgroundColor: '#fff',
   },
   menuItemLabel: {
-    fontSize: 16,
+    fontSize: Math.round(16 * scalingFactor),
   },
   menuItemDescription: {
-    fontSize: 10,
-    color: '#aaa', // set color to light gray
+    fontSize: Math.round(10 * scalingFactor),
+    color: '#aaa',
   },
   moreContainer: {
     backgroundColor: '#fff',
@@ -220,20 +224,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 2.84,
     elevation: 3,
-    padding: 15,
+    padding: Math.round(15 * scalingFactor),
     width: '95%',
   },
   moreList: {
     width: '100%',
   },
   moreTitle: {
-    fontSize: 15,
+    fontSize: Math.round(15 * scalingFactor),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: Math.round(10 * scalingFactor),
   },
   moreItemLabel: {
-    fontSize: 16,
+    fontSize: Math.round(16 * scalingFactor),
     color: '#aaa',
-    marginTop: 5,
+    marginTop: Math.round(5 * scalingFactor),
   },
 });

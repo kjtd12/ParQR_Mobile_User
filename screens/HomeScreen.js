@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#213A5C',
     borderRadius: 15,
-    padding: 20,
+    padding: 10,
     alignItems: 'center',
     marginTop: 30,
     width: '100%',
-    height: 'auto'
+    height: '45%'
   },
   cardTitle: {
     fontSize: 18,
