@@ -36,11 +36,16 @@ const VehiclesList = () => {
 
   const createVehicle = async (vehicleData) => {
     const newVehicleList = [...data, vehicleData];
+    if (newVehicleList.length === 1) {
+      // Set the isDefault property of the first vehicle to true
+      newVehicleList[0].isDefault = true;
+    }
     await firebase.firestore().collection('users')
       .doc(firebase.auth().currentUser.uid)
       .update({ vehicles: newVehicleList });
+    alert("Vehicle Created Successfully");
   };
-
+  
   const setDefaultVehicle = async (index) => {
     const newVehicleList = [...data];
     const defaultVehicle = newVehicleList.splice(index, 1)[0];
@@ -53,7 +58,6 @@ const VehiclesList = () => {
       .doc(firebase.auth().currentUser.uid)
       .update({ vehicles: newVehicleList });
   };
-  
 
   const renderListItem = ({ item, index }) => {
     const carImage = item.photoUrl ? { uri: item.photoUrl } : { uri: 'https://via.placeholder.com/150x150.png?text=Profile+Image' };

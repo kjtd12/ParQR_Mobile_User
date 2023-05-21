@@ -106,7 +106,7 @@ const SignupScreen = () => {
         <TouchableOpacity onPress={() => navigation.replace('Landing')}>
             <Image
                 source={ require('../assets/profileIcons/left.png') }
-                style={{ tintColor: 'white', position: 'absolute', top: -100, right: 150 }}
+                style={{ tintColor: 'white', position: 'absolute', top: -90, right: 150 }}
               />
           </TouchableOpacity>
         <Text style={[{fontWeight: 'bold', fontSize: 20, color: '#F3BB01', fontWeight: 'bold'}]}>

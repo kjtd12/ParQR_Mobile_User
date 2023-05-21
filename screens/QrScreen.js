@@ -105,12 +105,12 @@ const QrScreen = ({ navigation }) => {
   
 
   const handleClosePopUp = async () => {
+    setPopUpisVisible1(false)
     const db = firebase.firestore();
     const userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
     await userRef.update({
       paymentStatus: null,
     });
-    setPopUpisVisible1(false)
   } 
 
   const profileImage = profilePicture ? { uri: profilePicture } : { uri: 'https://via.placeholder.com/150x150.png?text=Profile+Image' };
@@ -129,7 +129,7 @@ const QrScreen = ({ navigation }) => {
     </View>
     <Modal visible={isModalOpen} style={{ backgroundColor: '#213A5C' }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#213A5C' }}>
-        <TouchableOpacity onPress={() => {setIsModalOpen(false)}} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
+        <TouchableOpacity onPress={() => navigation.replace('App', { screen: 'Home' })} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
           <Image
             source={require('../assets/icons/ArrowLeft.png')}
             style={{ tintColor: 'white', height: 30, width: 30 }}
@@ -158,9 +158,9 @@ const QrScreen = ({ navigation }) => {
           {userUid && <QRCode value={userUid} size={200}/>}
           
         </View>
-        <View style={{ position: 'absolute', bottom: 100, alignItems: 'center' }}>
-            <Text style={{ fontSize: 18, color: 'white' }}>Please Wait until the operator scans</Text>
-            <Text style={{ fontSize: 18, color: 'white' }}>the QR Code Completely for</Text>
+        <View style={{ marginTop: 30, alignItems: 'center' }}>
+            <Text style={{ fontSize: 18, color: 'white' }}>Please wait until the operator scans</Text>
+            <Text style={{ fontSize: 18, color: 'white' }}>the QR Code completely for</Text>
             <Text style={{ fontSize: 18, color: 'white' }}>verification</Text>
         </View>
       </View>

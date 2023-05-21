@@ -8,19 +8,26 @@ const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
   const [color, setColor] = useState('');
 
   const handleSubmit = () => {
-    const vehicleData = {
-      vehicleType,
-      vehicleModel,
-      plateNo,
-      color,
-    };
-
-    onSubmit(vehicleData);
-    setVehicleType('');
-    setVehicleModel('');
-    setPlateNo('');
-    setColor('');
+    if (vehicleType && vehicleModel && plateNo && color) {
+      const vehicleData = {
+        vehicleType,
+        vehicleModel,
+        plateNo,
+        color,
+      };
+  
+      onSubmit(vehicleData);
+      setVehicleType('');
+      setVehicleModel('');
+      setPlateNo('');
+      setColor('');
+    } else {
+      // Handle the case when any of the fields is empty
+      // You can show an error message or perform any other action
+      alert('Please fill out the missing fields');
+    }
   };
+  
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={() => onBackdropPress()} transparent={true}>
