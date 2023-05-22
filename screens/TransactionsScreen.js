@@ -224,53 +224,56 @@ const ParkingHistoryScreen = () => {
           />
         </View>
         <View>
-          <DropDownPicker 
-            items={[
-              { label: 'Today', value: 'today'},
-              { label: 'Last 7 days', value: 'sevenDays'},
-              { label: 'Last 30 Days', value: 'thirtyDays'},
-              { label: 'Custom', value: 'custom'},
-            ]}
-            containerStyle={{ 
-              backgroundColor: '#fff',
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
-            placeholder="Filter"
-            defaultValue={'today'}
-            setValue={(value) => setFilterCurrentValue(value)}
-            value={filterCurrentValue}
-            open={isFilterOpen}
-            setOpen={(value) => {
-              if (value === false && filterCurrentValue === 'custom') {
-                // Show the date modal again
-                setDateModalVisible(true);
-              } else {
-                setIsFilterOpen(value);
-              }
-            }}
-            onChangeItem={item => console.log(item.label, item.value)}
-            showTickIcon={true}
-            style={{ // add this to remove the default border of the DropDownPicker
-              borderWidth: 0,
-              width: 100  // add this to set the width
-            }}
-            dropDownStyle={{ // add this to remove the default border of the DropDownPicker dropdown
-              borderWidth: 0,
-              color: '#213A5C',
-            }}
-            labelStyle={{ // add this to style the label text
-              fontSize: 14,
-              color: '#213A5C',
-            }}
-            arrowIconStyle={{ // add this to style the arrow icon
-              tintColor: '#213A5C',
-            }}
-          />
+        <DropDownPicker 
+          items={[
+            { label: 'Today', value: 'today'},
+            { label: 'Last 7 days', value: 'sevenDays'},
+            { label: 'Last 30 Days', value: 'thirtyDays'},
+            { label: 'Custom', value: 'custom'},
+          ]}
+          containerStyle={{ 
+            backgroundColor: '#fff',
+            borderRadius: 10,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}
+          placeholder="Filter"
+          defaultValue={'today'}
+          setValue={(value) => {
+            if (value !== 'custom') {
+              setDateModalVisible(false); // Hide the date modal if the value is not 'custom'
+            }
+            setFilterCurrentValue(value);
+          }}
+          value={filterCurrentValue}
+          open={isFilterOpen}
+          setOpen={(value) => {
+            setIsFilterOpen(value);
+            if (value === false && filterCurrentValue === 'custom') {
+              setDateModalVisible(true); // Show the date modal again if closing the dropdown with 'custom' selected
+            }
+          }}
+          onChangeItem={item => console.log(item.label, item.value)}
+          showTickIcon={true}
+          style={{ // add this to remove the default border of the DropDownPicker
+            borderWidth: 0,
+            width: 100  // add this to set the width
+          }}
+          dropDownStyle={{ // add this to remove the default border of the DropDownPicker dropdown
+            borderWidth: 0,
+            color: '#213A5C',
+          }}
+          labelStyle={{ // add this to style the label text
+            fontSize: 14,
+            color: '#213A5C',
+          }}
+          arrowIconStyle={{ // add this to style the arrow icon
+            tintColor: '#213A5C',
+          }}
+        />
         </View>
       </View>
       <DateModal isVisible={dateModalVisible} onClose={() => setDateModalVisible(false)} onSubmit={handleSubmit} />
