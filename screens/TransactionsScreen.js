@@ -21,6 +21,10 @@ const ParkingHistoryScreen = () => {
 
   function filterAndSortTransactions(parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate) {
     let filteredParkingHistory = [...parkingHistory];
+
+    if(filterCurrentValue !== 'custom') {
+      setDateModalVisible(false);
+    }
     
     switch (filterCurrentValue) {
       case 'today':
@@ -243,8 +247,12 @@ const ParkingHistoryScreen = () => {
           placeholder="Filter"
           defaultValue={'today'}
           setValue={(value) => {
-            if (value !== 'custom') {
-              setDateModalVisible(false); // Hide the date modal if the value is not 'custom'
+            if (value === 'custom') {
+              if (filterCurrentValue === 'custom') {
+                setDateModalVisible(true); // Show the date modal if the current value is already 'custom'
+              }
+            } else {
+              setDateModalVisible(false); // Hide the date modal for other options
             }
             setFilterCurrentValue(value);
           }}
@@ -252,11 +260,15 @@ const ParkingHistoryScreen = () => {
           open={isFilterOpen}
           setOpen={(value) => {
             setIsFilterOpen(value);
-            if (value === false && filterCurrentValue === 'custom') {
-              setDateModalVisible(true); // Show the date modal again if closing the dropdown with 'custom' selected
+            if (!value){
+              if (!value && filterCurrentValue === 'custom') {
+                setDateModalVisible(true); // Show the date modal again if closing the dropdown with 'custom' selected
+              }
             }
           }}
-          onChangeItem={item => console.log(item.label, item.value)}
+          onChangeItem={(item) => {
+            setFilterCurrentValue(item.value); // Update the filterCurrentValue when an option is selected
+          }}
           showTickIcon={true}
           style={{ // add this to remove the default border of the DropDownPicker
             borderWidth: 0,
