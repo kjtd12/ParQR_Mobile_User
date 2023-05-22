@@ -215,7 +215,7 @@ const ParkingHistoryScreen = () => {
               color: '#213A5C',
             }}
             labelStyle={{ // add this to style the label text
-              fontSize: 16,
+              fontSize: 14,
               color: '#213A5C',
             }}
             arrowIconStyle={{ // add this to style the arrow icon
@@ -245,7 +245,14 @@ const ParkingHistoryScreen = () => {
             setValue={(value) => setFilterCurrentValue(value)}
             value={filterCurrentValue}
             open={isFilterOpen}
-            setOpen={setIsFilterOpen}
+            setOpen={(value) => {
+              if (value === false && filterCurrentValue === 'custom') {
+                // Show the date modal again
+                setDateModalVisible(true);
+              } else {
+                setIsFilterOpen(value);
+              }
+            }}
             onChangeItem={item => console.log(item.label, item.value)}
             showTickIcon={true}
             style={{ // add this to remove the default border of the DropDownPicker
@@ -257,7 +264,7 @@ const ParkingHistoryScreen = () => {
               color: '#213A5C',
             }}
             labelStyle={{ // add this to style the label text
-              fontSize: 16,
+              fontSize: 14,
               color: '#213A5C',
             }}
             arrowIconStyle={{ // add this to style the arrow icon
