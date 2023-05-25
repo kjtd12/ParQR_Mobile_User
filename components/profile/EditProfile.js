@@ -32,23 +32,30 @@ const EditProfile = () => {
   }, []);
 
   const handleUploadPhoto = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!');
-      return;
-    }
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+        return;
+      }
   
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
   
-    if (result.canceled) {
-      return;
+      if (result.canceled) {
+        return;
+      }
+  
+      setSelectedImage(result.assets[0].uri);
+      console.log(selectedImage);
+    } catch (error) {
+      // Handle the error
+      console.log(error);
     }
-    setSelectedImage(result.assets[0].uri);
   };
 
   const handleUpdateProfile = async () => {
@@ -59,7 +66,7 @@ const EditProfile = () => {
         await firebase.auth().currentUser.updateEmail(email);
       } catch (error) {
         // Error occurred while updating the email in Firebase Authentication
-        alert('Error updating email: ', error.message);
+        alert('Error updating email: ' + error.message);
         return;
       }
     }
@@ -67,39 +74,45 @@ const EditProfile = () => {
     // Update the profile in Firestore
     const currentUser = firebase.auth().currentUser;
     const operatorRef = firebase.firestore().collection('users');
-
+  
     // Check if the email already exists in other user accounts
     const operatorSnapshot = await operatorRef
       .where('email', '==', email)
       .where(firebase.firestore.FieldPath.documentId(), '!=', currentUser.uid)
       .get();
-
+  
     if (!operatorSnapshot.empty) {
       // Email already exists in a different operator
       alert('Email already exists and is already in use on another account.');
       return;
     }
-    
-    if (selectedImage) {
-      // Upload the image and update the profile picture
-      const storage = getStorage();
-      const imageRef = ref(storage, `user_profiles/${currentUser}.jpg`);
-      const response = await fetch(selectedImage);
-      const blob = await response.blob();
-      await uploadBytes(imageRef, blob);
-
-      const photoUrl = await getDownloadURL(imageRef);
-
-      // Update the user's profile picture URL in Firestore
-      const userRef = firebase.firestore().collection('users').doc(currentUser);
-      await userRef.update({ profile_picture: photoUrl });
-
-      // Update the local state to trigger a re-render
-      setProfilePicture(photoUrl);
+  
+    try {
+      if (selectedImage) {
+        // Upload the image and update the profile picture
+        const storage = getStorage();
+        const imageRef = ref(storage, `user_profiles/${currentUser.uid}.jpg`);
+        const response = await fetch(selectedImage);
+        const blob = await response.blob();
+        await uploadBytes(imageRef, blob);
+  
+        console.log(selectedImage);
+  
+        const photoUrl = await getDownloadURL(imageRef);
+  
+        // Update the user's profile picture URL in Firestore
+        const userRef = firebase.firestore().collection('users').doc(currentUser.uid);
+        await userRef.update({ profile_picture: photoUrl });
+  
+        // Update the local state to trigger a re-render
+        setProfilePicture(photoUrl);
+      }
+    } catch (error) {
+      console.error(error);
     }
   
     operatorRef
-      .doc(firebase.auth().currentUser.uid)
+      .doc(currentUser.uid)
       .update({
         name: name,
         address: address,
@@ -110,9 +123,10 @@ const EditProfile = () => {
         alert('Updated successfully');
       })
       .catch((error) => {
-        alert('Error updating: ', error);
+        alert('Error updating: ' + error);
       });
   };
+  
 
   const profileImage = profilePicture ? { uri: profilePicture } : { uri: 'https://via.placeholder.com/150x150.png?text=Profile+Image' };
 
