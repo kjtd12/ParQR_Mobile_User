@@ -51,7 +51,6 @@ const EditProfile = () => {
       }
   
       setSelectedImage(result.assets[0].uri);
-      console.log(selectedImage);
     } catch (error) {
       // Handle the error
       console.log(error);
@@ -95,8 +94,6 @@ const EditProfile = () => {
         const response = await fetch(selectedImage);
         const blob = await response.blob();
         await uploadBytes(imageRef, blob);
-  
-        console.log(selectedImage);
   
         const photoUrl = await getDownloadURL(imageRef);
   
