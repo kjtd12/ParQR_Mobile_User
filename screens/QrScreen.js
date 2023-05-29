@@ -129,7 +129,7 @@ const QrScreen = ({ navigation }) => {
     </View>
     <Modal visible={isModalOpen} style={{ backgroundColor: '#213A5C' }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#213A5C' }}>
-        <TouchableOpacity onPress={() => navigation.replace('App', { screen: 'Home' })} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
           <Image
             source={require('../assets/icons/ArrowLeft.png')}
             style={{ tintColor: 'white', height: 30, width: 30 }}
