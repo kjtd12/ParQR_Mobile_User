@@ -136,7 +136,7 @@ const QrScreen = ({ navigation }) => {
           />
         </TouchableOpacity>
         <Text style={{ position: 'absolute', top: 40, fontSize: 20, color: 'white', paddingTop: 5 }}>My QR Code</Text>
-        <TouchableOpacity onPress={() => {setIsModalOpen(false); navigation.navigate('Home')}} style={{ position: 'absolute', top: 40, right: 40, paddingTop: 10 }}>
+        <TouchableOpacity onPress={() => {setIsModalOpen(false);}} style={{ position: 'absolute', top: 40, right: 40, paddingTop: 10 }}>
           <Image
             source={require('../assets/transactionIcons/close.png')}
             style={{ tintColor: 'white', height: 15, width: 15 }}
