@@ -54,8 +54,8 @@ const ProfileScreen = () => {
   ];
   
   const moreItems = [
-    { id: '1', label: 'Feedback', onPress: () => setFeedbackVisible(true), imagePath: require('../assets/profileIcons/AboutApp.png') },
-    { id: '2', label: 'About App', onPress: () => navigation.navigate('Profiles',{screen: 'About App'}), imagePath: require('../assets/profileIcons/AboutApp.png') },
+    { id: '6', label: 'Feedback', onPress: () => setFeedbackVisible(true), imagePath: require('../assets/profileIcons/AboutApp.png') },
+    { id: '7', label: 'About App', onPress: () => navigation.navigate('Profiles',{screen: 'About App'}), imagePath: require('../assets/profileIcons/AboutApp.png') },
   ];
   
   const renderMenuItem = ({ item }) => {
@@ -145,9 +145,6 @@ const ProfileScreen = () => {
         keyExtractor={(item) => item.id}
         style={styles.menuList}
       />
-    </View>
-    <View style={styles.moreContainer}>
-    <Text style={styles.moreTitle}>More</Text>
       <FlatList
         data={moreItems}
         renderItem={renderMoreItem}
@@ -155,13 +152,16 @@ const ProfileScreen = () => {
         style={styles.moreList}
       />
     </View>
+    {/* <View style={styles.moreContainer}>
+    <Text style={styles.moreTitle}>More</Text>
+    </View> */}
   </View>
   )
 }
 
 export default ProfileScreen
 
-const scalingFactor = 0.6;
+const scalingFactor = 0.7;
 
 const styles = StyleSheet.create({
   container: {
@@ -175,12 +175,12 @@ const styles = StyleSheet.create({
     color: '#213A5C',
   },
   name: {
-    fontSize: Math.round(20 * scalingFactor),
+    fontSize: Math.round(22 * scalingFactor),
     fontWeight: 'bold',
     marginBottom: Math.round(10 * scalingFactor),
   },
   email: {
-    fontSize: Math.round(16 * scalingFactor),
+    fontSize: Math.round(18 * scalingFactor),
     marginBottom: Math.round(30 * scalingFactor),
   },
   menuContainer: {
@@ -207,10 +207,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   menuItemLabel: {
-    fontSize: Math.round(16 * scalingFactor),
+    fontSize: Math.round(18 * scalingFactor),
   },
   menuItemDescription: {
-    fontSize: Math.round(10 * scalingFactor),
+    fontSize: Math.round(12 * scalingFactor),
     color: '#aaa',
   },
   moreContainer: {
