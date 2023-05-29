@@ -161,7 +161,7 @@ const ProfileScreen = () => {
 
 export default ProfileScreen
 
-const scalingFactor = 0.7;
+const scalingFactor = 0.8;
 
 const styles = StyleSheet.create({
   container: {
