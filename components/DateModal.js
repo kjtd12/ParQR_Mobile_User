@@ -51,13 +51,6 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
             mode="date"
             display="default"
             onChange={handleStartDateChange}
-            theme={{
-              backgroundColor: '#213A5C',
-              textColor: '#fff',
-              headerBackgroundColor: '#213A5C',
-              headerTextColor: '#fff',
-              modalBackgroundColor: 'rgba(33, 58, 92, 0.8)',
-            }}
           />
         )}
         <Text style={{ paddingVertical: 5, color: '#213A5C', fontWeight: 'bold' }}>To</Text>
@@ -75,7 +68,6 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
             mode="date"
             display="default"
             onChange={handleEndDateChange}
-            style={{backgroundColor: '#213A5C', width: 300}}
           />
         )}
         <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#213A5C', borderRadius: 5, padding: 10, marginTop: 30 }}>
