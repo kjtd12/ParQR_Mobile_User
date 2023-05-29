@@ -32,6 +32,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
         <TouchableOpacity onPress={onClose} style={{ position: 'absolute', top: 10, right: 15, padding: 5 }}>
           <Image
             source={ require('../assets/transactionIcons/close.png') }
+            style={{ width: 20, height: 20 }}
           />
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}><Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30, marginTop: 20, color: '#213A5C' }}>Custom Range</Text></View>
@@ -40,7 +41,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
           <TextInput
             value={startDate? startDate.toLocaleDateString() : ''}
             placeholder="Select a start date"
-            style={{ padding: 5 }}
+            style={{ padding: 10 }}
             editable={false}
           />
         </TouchableOpacity>
@@ -64,7 +65,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
           <TextInput
              value={endDate ? endDate.toLocaleDateString() : ''}
             placeholder="Select an end date"
-            style={{ padding: 5 }}
+            style={{ padding: 10 }}
             editable={false}
           />
         </TouchableOpacity>
