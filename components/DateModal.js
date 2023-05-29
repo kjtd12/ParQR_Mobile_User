@@ -10,6 +10,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
 
   const handleStartDatePress = () => {
     if (Platform.OS === 'ios') {
+      console.log('Start date show iphone');
       setShowStartDatePicker(true);
     }
     setShowStartDatePicker(true);
@@ -17,6 +18,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
 
   const handleEndDatePress = () => {
     if (Platform.OS === 'ios') {
+      console.log('End date show iphone');
       setShowEndDatePicker(true);
     }
     setShowEndDatePicker(true);
