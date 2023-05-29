@@ -142,7 +142,7 @@ const QrScreen = ({ navigation }) => {
             style={{ tintColor: 'white', height: 15, width: 15 }}
           />
         </TouchableOpacity>
-        <View style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderRadius: 10, width: '75%', paddingVertical: 20 }}>
+        <View style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderRadius: 10, width: '90%', paddingVertical: 20 }}>
           <View>
             <Image
               source={profileImage && { uri: profileImage.uri }}
@@ -150,7 +150,7 @@ const QrScreen = ({ navigation }) => {
             />
           </View>
           <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{data.name}</Text>
-          <View style={{ padding: 10 }}>
+          <View style={{ width: '60%' }}>
             <Text style={{ color: 'gray', fontSize: 16 }}>Plate: {carPlate} {space}</Text>
             <Text style={{ color: 'gray', fontSize: 16 }}>Car Model: {carModel}</Text>
             <Text style={{ color: 'gray', fontSize: 16 }}>Car Color: {carColor}</Text>

@@ -299,19 +299,24 @@ const ParkingHistoryScreen = () => {
   );
 };
 
+export default ParkingHistoryScreen;
+
+const scalingFactor = 0.8; // Adjust the scaling factor as needed
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5F5F5',
+    padding: 10
   },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 16,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    elevation: 2,
-    borderWidth: 1,
+    borderRadius: 10 * scalingFactor,
+    padding: 16 * scalingFactor,
+    marginVertical: 8 * scalingFactor,
+    marginHorizontal: 16 * scalingFactor,
+    elevation: 2 * scalingFactor,
+    borderWidth: 1 * scalingFactor,
     borderColor: '#ddd',
     shadowColor: '#000',
     shadowOffset: {
@@ -320,7 +325,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5 * scalingFactor,
   },
   row: {
     flexDirection: 'row',
@@ -334,19 +339,19 @@ const styles = StyleSheet.create({
   },
   date: {
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: 13 * scalingFactor,
   },
   price: {
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: 13 * scalingFactor,
   },
   operator: {
-    fontSize: 10,
+    fontSize: 10 * scalingFactor,
   },
-  time:{
-    fontSize: 10,
+  time: {
+    fontSize: 10 * scalingFactor,
   },
-  list:{
+  list: {
     flex: 1,
     width: '100%',
   },
@@ -355,24 +360,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#EFF1F8',
-    borderRadius: 15,
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
-    marginVertical: 5,
+    borderRadius: 15 * scalingFactor,
+    paddingHorizontal: 10 * scalingFactor,
+    marginHorizontal: 10 * scalingFactor,
+    marginVertical: 5 * scalingFactor,
   },
   searchInput: {
     flex: 1,
-    fontSize: 16,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    fontSize: 16 * scalingFactor,
+    paddingVertical: 10 * scalingFactor,
+    paddingHorizontal: 10 * scalingFactor,
   },
   searchIcon: {
-    width: 20,
-    height: 20,
+    width: 20 * scalingFactor,
+    height: 20 * scalingFactor,
     tintColor: 'black',
   },
 });
-
-
-
-export default ParkingHistoryScreen;
