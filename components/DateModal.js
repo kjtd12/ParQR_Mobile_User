@@ -48,7 +48,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
             </Text>
           </View>
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>From</Text>
-          <TouchableWithoutFeedback onPress={handleStartDatePress}>
+          <TouchableOpacity activeOpacity={1} onPress={handleStartDatePress}>
             <View style={{ marginBottom: 20 }}>
               <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
@@ -59,7 +59,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
                 />
               </View>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
           {showStartDatePicker && (
             <DateTimePicker
               value={startDate || new Date()}
@@ -69,7 +69,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
             />
           )}
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>To</Text>
-          <TouchableWithoutFeedback onPress={handleEndDatePress}>
+          <TouchableOpacity activeOpacity={1} onPress={handleEndDatePress}>
             <View style={{ marginBottom: 20 }}>
               <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
@@ -80,7 +80,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
                 />
               </View>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
           {showEndDatePicker && (
             <DateTimePicker
               value={endDate || new Date()}
@@ -89,7 +89,6 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               onChange={handleEndDateChange}
             />
           )}
-
           <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#213A5C', borderRadius: 5, padding: 10, marginTop: 30 }}>
             <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Confirm</Text>
           </TouchableOpacity>
