@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../../config'
 import React, { useState, useEffect } from 'react'
@@ -112,12 +112,15 @@ const VehiclesList = () => {
         </TouchableOpacity>
       </View>
       <Text style={{ color: '#213A5C', fontSize: 18, fontWeight: 'bold', marginTop: 15 }}>My Vehicles</Text>
-      <FlatList
-        data={data}
-        renderItem={renderListItem}
-        keyExtractor={(item, index) => index.toString()}
-        style={styles.list}
-      />
+      <View style={styles.container}>
+        <FlatList
+          data={data}
+          renderItem={renderListItem}
+          keyExtractor={(item, index) => index.toString()}
+          style={{ flexGrow: 1 }}
+
+        />
+      </View>
       <VehicleModal
         visible={isModalVisible}
         onBackdropPress={() => setIsModalVisible(false)}

@@ -9,18 +9,10 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
   const handleStartDatePress = () => {
-    if (Platform.OS === 'ios') {
-      console.log('Start date show iphone');
-      setShowStartDatePicker(true);
-    }
     setShowStartDatePicker(true);
   };
 
   const handleEndDatePress = () => {
-    if (Platform.OS === 'ios') {
-      console.log('End date show iphone');
-      setShowEndDatePicker(true);
-    }
     setShowEndDatePicker(true);
   };
 
@@ -55,7 +47,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               Custom Range
             </Text>
           </View>
-          <Text style={{ paddingVertical: 5, color: '#213A5C', fontWeight: 'bold' }}>From</Text>
+          <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>From</Text>
           <TouchableWithoutFeedback onPress={handleStartDatePress}>
             <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5, marginBottom: 20 }}>
               <TextInput
@@ -74,7 +66,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               onChange={handleStartDateChange}
             />
           )}
-          <Text style={{ paddingVertical: 5, color: '#213A5C', fontWeight: 'bold' }}>To</Text>
+          <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>To</Text>
           <TouchableWithoutFeedback onPress={handleEndDatePress}>
             <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5, marginBottom: 20 }}>
               <TextInput
