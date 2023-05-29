@@ -15,7 +15,7 @@ const CustomTabBarButton = ({children, onPress}) => (
         style={{
             top: -45,
             justifyContent: 'center',
-            alignItemsLeft: 'center',
+            alignItems: 'center',
             ...StyleSheet.shadow
         }}
         onPress={onPress}
@@ -58,7 +58,6 @@ const Tabs = () => {
                     backgroundColor: '#213A5C',
                     borderRadius: 15,
                     height: 90,
-                    ...style.shadow
                 },
             }}
         >

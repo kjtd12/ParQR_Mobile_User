@@ -118,7 +118,6 @@ const VehiclesList = () => {
           renderItem={renderListItem}
           keyExtractor={(item, index) => index.toString()}
           style={{ flexGrow: 1 }}
-
         />
       </View>
       <VehicleModal
