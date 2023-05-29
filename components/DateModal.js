@@ -49,13 +49,15 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
           </View>
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>From</Text>
           <TouchableWithoutFeedback onPress={handleStartDatePress}>
-            <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5, marginBottom: 20 }}>
-              <TextInput
-                value={startDate ? startDate.toLocaleDateString() : ''}
-                placeholder="Select a start date"
-                style={{ padding: 10 }}
-                editable={false}
-              />
+            <View style={{ marginBottom: 20 }}>
+              <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
+                <TextInput
+                  value={startDate ? startDate.toLocaleDateString() : ''}
+                  placeholder="Select a start date"
+                  style={{ padding: 10 }}
+                  editable={false}
+                />
+              </View>
             </View>
           </TouchableWithoutFeedback>
           {showStartDatePicker && (
@@ -68,13 +70,15 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
           )}
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>To</Text>
           <TouchableWithoutFeedback onPress={handleEndDatePress}>
-            <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5, marginBottom: 20 }}>
-              <TextInput
-                value={endDate ? endDate.toLocaleDateString() : ''}
-                placeholder="Select an end date"
-                style={{ padding: 10 }}
-                editable={false}
-              />
+            <View style={{ marginBottom: 20 }}>
+              <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
+                <TextInput
+                  value={endDate ? endDate.toLocaleDateString() : ''}
+                  placeholder="Select an end date"
+                  style={{ padding: 10 }}
+                  editable={false}
+                />
+              </View>
             </View>
           </TouchableWithoutFeedback>
           {showEndDatePicker && (
@@ -85,6 +89,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               onChange={handleEndDateChange}
             />
           )}
+
           <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#213A5C', borderRadius: 5, padding: 10, marginTop: 30 }}>
             <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Confirm</Text>
           </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View, Animated } from 'react-native';
+import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 
 const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
   const [vehicleType, setVehicleType] = useState('');
@@ -30,42 +30,42 @@ const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
   
 
   return (
-    <Modal visible={visible} animationType="slide" onRequestClose={() => onBackdropPress()} transparent={true}>
-      <TouchableOpacity style={styles.backdrop} onPress={() => onBackdropPress()} />
-      <View style={styles.modal}>
+<Modal visible={visible} animationType="slide" onRequestClose={onBackdropPress} transparent={true}>
+      <TouchableOpacity style={styles.backdrop} onPress={onBackdropPress} />
+      <KeyboardAvoidingView style={styles.modal} behavior="padding">
         <Text style={styles.heading}>Create Vehicle</Text>
         <Text style={{ padding: 5 }}>Vehicle Type: </Text>
         <TextInput
           style={styles.input}
           placeholder="Vehicle Type Here..."
           value={vehicleType}
-          onChangeText={(value) => setVehicleType(value)}
+          onChangeText={setVehicleType}
         />
         <Text style={{ padding: 5 }}>Vehicle Model: </Text>
         <TextInput
           style={styles.input}
           placeholder="Vehicle Model Here..."
           value={vehicleModel}
-          onChangeText={(value) => setVehicleModel(value)}
+          onChangeText={setVehicleModel}
         />
         <Text style={{ padding: 5 }}>Plate No: </Text>
         <TextInput
           style={styles.input}
           placeholder="Plate No. Here..."
           value={plateNo}
-          onChangeText={(value) => setPlateNo(value)}
+          onChangeText={setPlateNo}
         />
         <Text style={{ padding: 5 }}>Color: </Text>
         <TextInput
           style={styles.input}
           placeholder="Color Here..."
           value={color}
-          onChangeText={(value) => setColor(value)}
+          onChangeText={setColor}
         />
-        <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Create</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
