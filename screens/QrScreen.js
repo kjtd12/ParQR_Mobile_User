@@ -129,14 +129,14 @@ const QrScreen = ({ navigation }) => {
     </View>
     <Modal visible={isModalOpen} style={{ backgroundColor: '#213A5C' }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#213A5C' }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
+        <TouchableOpacity onPress={() => {setIsModalOpen(false); navigation.navigate('Home')}} style={{ position: 'absolute', top: 40, left: 40, paddingTop: 1 }}>
           <Image
             source={require('../assets/icons/ArrowLeft.png')}
             style={{ tintColor: 'white', height: 30, width: 30 }}
           />
         </TouchableOpacity>
         <Text style={{ position: 'absolute', top: 40, fontSize: 20, color: 'white', paddingTop: 5 }}>My QR Code</Text>
-        <TouchableOpacity onPress={() => {setIsModalOpen(false)}} style={{ position: 'absolute', top: 40, right: 40, paddingTop: 10 }}>
+        <TouchableOpacity onPress={() => {setIsModalOpen(false); navigation.navigate('Home')}} style={{ position: 'absolute', top: 40, right: 40, paddingTop: 10 }}>
           <Image
             source={require('../assets/transactionIcons/close.png')}
             style={{ tintColor: 'white', height: 15, width: 15 }}
