@@ -70,7 +70,7 @@ const MyWallet = () => {
         data={topUpHistory}
         renderItem={renderListItem}
         keyExtractor={(item, index) => index.toString()}
-        style={{ flexGrow: 1 }}
+        style={styles.list}
       />
       
     </View>
@@ -81,8 +81,13 @@ export default MyWallet
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#F5F5F5',
     padding: 10,
+  },
+  list: {
+    flex: 1,
+    width: '100%',
   },
   cardTop: {
     backgroundColor: '#213A5C',
