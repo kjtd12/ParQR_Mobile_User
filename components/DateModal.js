@@ -47,7 +47,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               Custom Range
             </Text>
           </View>
-          <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>From</Text>
+          <Text style={{ color: '#213A5C', fontWeight: 'bold', marginLeft: 20 }}>From</Text>
           <TouchableOpacity activeOpacity={1} onPress={handleStartDatePress} style={{ margin: 20 }}>
             <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
               <TextInput
@@ -66,7 +66,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               onChange={handleStartDateChange}
             />
           )}
-          <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>To</Text>
+          <Text style={{ color: '#213A5C', fontWeight: 'bold', marginLeft: 20 }}>To</Text>
           <TouchableOpacity activeOpacity={1} onPress={handleEndDatePress}style={{ margin: 20 }}>
               <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
