@@ -54,7 +54,7 @@ const LoginScreen = () => {
 
 
     const redirectSignUp = () => {
-        navigation.replace('Signup')
+        navigation.navigate('Signup')
     }
 
     //Log in Function

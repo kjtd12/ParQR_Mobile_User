@@ -103,7 +103,7 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.replace('Landing')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
                 source={ require('../assets/profileIcons/left.png') }
                 style={{ tintColor: 'white', position: 'absolute', top: -50, right: 150 }}

@@ -7,11 +7,11 @@ const LandingScreen = () => {
     const navigation = useNavigation()
 
     const redirectSignUp = () => {
-        navigation.replace('Signup')
+        navigation.navigate('Signup')
     }
 
     const redirectLogIn = () => {
-        navigation.replace('Login')
+        navigation.navigate('Login')
     }
 
     return (
