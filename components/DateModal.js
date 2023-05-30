@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Image, Platform } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, Button, Image, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const DateModal = ({ isVisible, onClose, onSubmit }) => {
@@ -7,6 +7,11 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
   const [endDate, setEndDate] = useState(null);
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+
+  const TouchableComponent = Platform.select({
+    ios: Button,
+    android: TouchableOpacity,
+  });
 
   const handleStartDatePress = () => {
     setShowStartDatePicker(true);
@@ -47,27 +52,38 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               Custom Range
             </Text>
           </View>
-          <Text style={{ color: '#213A5C', fontWeight: 'bold', marginLeft: 20 }}>From</Text>
-          <TouchableOpacity activeOpacity={1} onPress={handleStartDatePress} style={{ margin: 20 }}>
-            <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
-              <TextInput
-                value={startDate ? startDate.toLocaleDateString() : ''}
-                placeholder="Select a start date"
-                style={{ margin: 10 }}
-                editable={false}
+          <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>From</Text>
+          <TouchableComponent
+              activeOpacity={1}
+              onPress={handleStartDatePress}
+              style={{ marginVertical: 20 }}
+            >
+              <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
+                <TextInput
+                  value={startDate ? startDate.toLocaleDateString() : ''}
+                  placeholder="Select a start date"
+                  style={{ margin: 10 }}
+                  editable={false}
+                />
+              </View>
+            </TouchableComponent>
+
+            {showStartDatePicker && (
+              <DateTimePicker
+                value={startDate || new Date()}
+                mode="date"
+                display="default"
+                onChange={handleStartDateChange}
               />
-            </View>
-          </TouchableOpacity>
-          {showStartDatePicker && (
-            <DateTimePicker
-              value={startDate || new Date()}
-              mode="date"
-              display="default"
-              onChange={handleStartDateChange}
-            />
-          )}
-          <Text style={{ color: '#213A5C', fontWeight: 'bold', marginLeft: 20 }}>To</Text>
-          <TouchableOpacity activeOpacity={1} onPress={handleEndDatePress}style={{ margin: 20 }}>
+            )}
+
+            <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>To</Text>
+
+            <TouchableComponent
+              activeOpacity={1}
+              onPress={handleEndDatePress}
+              style={{ marginVertical: 20 }}
+            >
               <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
                   value={endDate ? endDate.toLocaleDateString() : ''}
@@ -76,16 +92,17 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
                   editable={false}
                 />
               </View>
-          </TouchableOpacity>
-          {showEndDatePicker && (
-            <DateTimePicker
-              value={endDate || new Date()}
-              mode="date"
-              display="default"
-              onChange={handleEndDateChange}
-            />
-          )}
-          <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#213A5C', borderRadius: 5, padding: 10, marginTop: 30, marginHorizontal: 20}}>
+            </TouchableComponent>
+
+            {showEndDatePicker && (
+              <DateTimePicker
+                value={endDate || new Date()}
+                mode="date"
+                display="default"
+                onChange={handleEndDateChange}
+              />
+            )}
+          <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#213A5C', borderRadius: 5, padding: 10, marginTop: 30 }}>
             <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Confirm</Text>
           </TouchableOpacity>
         </View>
