@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, Button, Image, Platform } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, TouchableHighlight, Image, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const DateModal = ({ isVisible, onClose, onSubmit }) => {
@@ -9,7 +9,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
   const TouchableComponent = Platform.select({
-    ios: Button,
+    ios: TouchableHighlight,
     android: TouchableOpacity,
   });
 
