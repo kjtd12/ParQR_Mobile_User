@@ -216,6 +216,7 @@ const ParkingHistoryScreen = () => {
             }}
             dropDownStyle={{ // add this to remove the default border of the DropDownPicker dropdown
               borderWidth: 0,
+              fontSize: 12,
               color: '#213A5C',
             }}
             labelStyle={{ // add this to style the label text
@@ -276,6 +277,7 @@ const ParkingHistoryScreen = () => {
           }}
           dropDownStyle={{ // add this to remove the default border of the DropDownPicker dropdown
             borderWidth: 0,
+            fontSize: 12,
             color: '#213A5C',
           }}
           labelStyle={{ // add this to style the label text
