@@ -171,11 +171,10 @@ const SignupScreen = () => {
             {errorMsgPassword1 && <Text style={styles.error}>{errorMsgPassword1}</Text>}
             {passWordMatch && <Text style={styles.error}>{passWordMatch}</Text>}
 
-            <TouchableOpacity
-                onPress={handleSignUp}
-                style={{ marginTop: 20 }}
-                >
-                <Text style={[styles.button, {fontWeight: 'bold', fontSize: 12}, styles.text]}>Sign Up</Text>
+            <TouchableOpacity onPress={handleSignUp} style={{ marginTop: 20, width: '100%' }}>
+                <Text style={[styles.button, { fontWeight: 'bold', fontSize: 12, width: '100%', textAlign: 'center' }, styles.text]}>
+                    Sign Up
+                </Text>
             </TouchableOpacity>
         </View>
         <View style={styles.line} />
