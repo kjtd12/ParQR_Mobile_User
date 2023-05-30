@@ -173,7 +173,7 @@ const SignupScreen = () => {
 
             <TouchableOpacity
                 onPress={handleSignUp}
-                style={{ marginTop: 10 }}
+                style={{ marginTop: 20 }}
                 >
                 <Text style={[styles.button, {fontWeight: 'bold', fontSize: 12}, styles.text]}>Sign Up</Text>
             </TouchableOpacity>
