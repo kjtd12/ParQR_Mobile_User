@@ -49,12 +49,12 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
           </View>
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>From</Text>
           <TouchableOpacity activeOpacity={1} onPress={handleStartDatePress}>
-            <View >
+            <View style={{ marginVertical: 20 }}>
               <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
                   value={startDate ? startDate.toLocaleDateString() : ''}
                   placeholder="Select a start date"
-                  style={{ padding: 10 }}
+                  style={{ margin: 10 }}
                   editable={false}
                 />
               </View>
@@ -70,12 +70,12 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
           )}
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>To</Text>
           <TouchableOpacity activeOpacity={1} onPress={handleEndDatePress}>
-            <View >
+            <View style={{ marginVertical: 20 }}>
               <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
                   value={endDate ? endDate.toLocaleDateString() : ''}
                   placeholder="Select an end date"
-                  style={{ padding: 10 }}
+                  style={{ margin: 10 }}
                   editable={false}
                 />
               </View>
