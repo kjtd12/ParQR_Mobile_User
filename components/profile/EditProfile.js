@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editContainer: {
-    marginVertical: 10,
+    marginVertical: 20,
     paddingHorizontal: 7,
   },
   editRow: {
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   cards: {
     backgroundColor: '#fff',
     borderRadius: 7,
-    padding: 10,
+    padding: 16,
     marginVertical: 10,
     borderWidth: 0.5,
     borderColor: '#ddd',
