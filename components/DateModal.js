@@ -58,11 +58,11 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               onPress={handleStartDatePress}
               style={{ marginVertical: 20 }}
             >
-              <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
+              <View style={{ borderWidth: 2, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
                   value={startDate ? startDate.toLocaleDateString() : ''}
                   placeholder="Select a start date"
-                  style={{ margin: 10 }}
+                  style={{ padding: 10}}
                   editable={false}
                 />
               </View>
@@ -84,11 +84,11 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               onPress={handleEndDatePress}
               style={{ marginVertical: 20 }}
             >
-              <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
+              <View style={{ borderWidth: 2, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
                   value={endDate ? endDate.toLocaleDateString() : ''}
                   placeholder="Select an end date"
-                  style={{ margin: 10 }}
+                  style={{ padding: 10}}
                   editable={false}
                 />
               </View>
