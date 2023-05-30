@@ -48,7 +48,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
             </Text>
           </View>
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>From</Text>
-          <TouchableOpacity activeOpacity={1} onPress={handleStartDatePress} style={{ marginVertical: 20 }}>
+          <TouchableOpacity activeOpacity={1} onPress={handleStartDatePress} style={{ margin: 20 }}>
             <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
               <TextInput
                 value={startDate ? startDate.toLocaleDateString() : ''}
@@ -67,7 +67,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
             />
           )}
           <Text style={{ color: '#213A5C', fontWeight: 'bold' }}>To</Text>
-          <TouchableOpacity activeOpacity={1} onPress={handleEndDatePress}style={{ marginVertical: 20 }}>
+          <TouchableOpacity activeOpacity={1} onPress={handleEndDatePress}style={{ margin: 20 }}>
               <View style={{ borderWidth: 1, borderColor: '#213A5C', borderRadius: 5 }}>
                 <TextInput
                   value={endDate ? endDate.toLocaleDateString() : ''}
@@ -85,7 +85,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
               onChange={handleEndDateChange}
             />
           )}
-          <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#213A5C', borderRadius: 5, padding: 10, marginTop: 30 }}>
+          <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#213A5C', borderRadius: 5, padding: 10, marginTop: 30, marginHorizontal: 20}}>
             <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Confirm</Text>
           </TouchableOpacity>
         </View>
