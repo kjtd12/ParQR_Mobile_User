@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, Image  } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import QRCode from 'react-native-qrcode-svg';
 import { firebase } from '../../config'
 import React, {useState, useEffect} from 'react'
 import moment from 'moment';
@@ -49,7 +48,7 @@ const MyWallet = () => {
     <View style={styles.container}>
       <View style={styles.cardTop}>
         <View style={{ flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between' }}>
-          <TouchableOpacity onPress={() => navigation.replace('App', { screen: 'Profile' })} style={{ flex: 1, alignItems: 'flex-start' }}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={{ flex: 1, alignItems: 'flex-start' }}>
             <Image
                 source={ require('../../assets/icons/ArrowLeft.png') }
                 style={{ tintColor: 'white' }}
@@ -61,9 +60,15 @@ const MyWallet = () => {
           <View style={{ flex: 1 }}></View>
         </View>
         <View style={{ marginLeft: 20, marginTop: 40 }}>
-          <Text style={[styles.balance, styles.cardTopText, { color: '#aaa', fontWeight: 'normal' }]}>Hi, {data.name}!</Text>
-          <Text style={[styles.balance, styles.cardTopText]}>Total Balance</Text>
-          <Text style={{ fontSize: 42, fontWeight: 'bold', marginBottom: 10, color: '#fff' }}>₱ {data.e_wallet?.toFixed(2)}</Text>
+        <Text style={[styles.balance, styles.cardTopText, { color: '#aaa', fontWeight: 'normal' }]}>
+          Hi, {data?.name || 'User'}!
+        </Text>
+        <Text style={[styles.balance, styles.cardTopText]}>
+          Total Balance
+        </Text>
+        <Text style={{ fontSize: 42, fontWeight: 'bold', marginBottom: 10, color: '#fff' }}>
+          ₱ {data?.e_wallet?.toFixed(2) || '0.00'}
+        </Text>
         </View>
       </View>
       <Text style={[styles.label, { color: '#213A5C' }]}>Top-up History</Text>

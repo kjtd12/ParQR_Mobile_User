@@ -14,7 +14,7 @@ const ProfileScreen = () => {
   const [feedbackVisible, setFeedbackVisible] = useState(false);
   
   const navigation = useNavigation();
-  const uid = auth.currentUser.uid;
+  const uid = auth.currentUser?.uid;
  
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
