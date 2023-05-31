@@ -12,7 +12,10 @@ const ProfileScreen = () => {
   const [data, setData] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
   const [feedbackVisible, setFeedbackVisible] = useState(false);
+  const [uid, setUID] = useState(null);
   const navigation = useNavigation();
+
+  setUID(auth.currentUser.uid);
 
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
@@ -25,7 +28,7 @@ const ProfileScreen = () => {
 
   useEffect(() => { //Get User's Name
     firebase.firestore().collection('users')
-    .doc(firebase.auth().currentUser.uid).get()
+    .doc(uid).get()
     .then((snapshot) => {
       if(snapshot.exists){
         setData(snapshot.data())
