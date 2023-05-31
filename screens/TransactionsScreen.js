@@ -18,6 +18,7 @@ const ParkingHistoryScreen = () => {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [detailData, setDetailData] = useState([]);
+  const [initialFilterValue, setInitialFilterValue] = useState('');
 
   function filterTransactions(parkingHistory, filterCurrentValue, startDate, endDate) {
     let filteredParkingHistory = [...parkingHistory];
@@ -87,12 +88,24 @@ const ParkingHistoryScreen = () => {
   
     return sortedParkingHistory;
   }
-  
+
   useEffect(() => {
-    const filteredTransactions = filterTransactions(parkingHistory, filterCurrentValue, startDate, endDate);
+    const isCustomFilter = filterCurrentValue === 'custom';
+    const filteredTransactions = filterTransactions(parkingHistory, filterCurrentValue, startDate, endDate, setDateModalVisible);
     const sortedTransactions = sortTransactions(filteredTransactions, sortCurrentValue);
     setFilteredParkingHistory(sortedTransactions);
-  }, [parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate, setDateModalVisible]);  
+  
+    if (initialFilterValue !== 'custom') {
+      setDateModalVisible(isCustomFilter);
+    }
+  }, [parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate, setDateModalVisible, initialFilterValue]);
+  
+  // Update the initialFilterValue when the filterCurrentValue changes
+  useEffect(() => {
+    setInitialFilterValue(filterCurrentValue);
+  }, [filterCurrentValue]);
+  
+    
   
   const handleSubmit = (value1, value2) => {
     setStartDate(value1);
