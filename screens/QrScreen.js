@@ -50,22 +50,27 @@ const QrScreen = ({ navigation }) => {
   }, [navigation]);
   
 
-  useEffect(() => { //Get User's Name
-    firebase.firestore().collection('users')
-    .doc(firebase.auth().currentUser.uid).get()
-    .then((snapshot) => {
-      if(snapshot.exists){
-        setData(snapshot.data())
+  useEffect(() => {
+    const userId = firebase.auth().currentUser.uid;
+    const userRef = firebase.firestore().collection('users').doc(userId);
+  
+    const unsubscribe = userRef.onSnapshot((snapshot) => {
+      if (snapshot.exists) {
+        setData(snapshot.data());
         setProfilePicture(snapshot.get('profile_picture'));
-        const car = snapshot.data().vehicles.find((v) => v.isDefault)
+        const car = snapshot.data().vehicles.find((v) => v.isDefault);
         setCarPlate(car ? car.plateNo : '');
-        setCarModel(car ? car.vehicleModel : '')
-        setCarColor(car ? car.color : '')
+        setCarModel(car ? car.vehicleModel : '');
+        setCarColor(car ? car.color : '');
       } else {
-        console.log('user does not exist')
+        console.log('User does not exist');
       }
-    })
+    });
+  
+    // Unsubscribe from the listener when the component unmounts
+    return () => unsubscribe();
   }, []);
+  
 
   useEffect(() => {
     // Get the user's UID and store it in a variable
@@ -79,7 +84,6 @@ const QrScreen = ({ navigation }) => {
     const unsubscribe = userRef.onSnapshot(snapshot => {
       if (snapshot.exists) {
         const status = snapshot.get('paymentStatus');
-        
         const balance = snapshot.get('balance')
         setStatus(status);
         setBalance(balance)
