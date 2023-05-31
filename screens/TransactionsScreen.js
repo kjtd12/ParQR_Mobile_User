@@ -314,6 +314,7 @@ const ParkingHistoryScreen = () => {
         keyExtractor={(item) => item.start_time.toString()}
         style={styles.list}
       />
+      <View style={{ marginVertical: 50 }}></View>
     </View>
   );
 };
