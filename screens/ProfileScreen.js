@@ -12,11 +12,10 @@ const ProfileScreen = () => {
   const [data, setData] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
   const [feedbackVisible, setFeedbackVisible] = useState(false);
-  const [uid, setUID] = useState(null);
+  
   const navigation = useNavigation();
-
-  setUID(auth.currentUser.uid);
-
+  const uid = auth.currentUser.uid;
+ 
   const changePassword = () => {
     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
     .then(() => {
