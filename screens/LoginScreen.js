@@ -44,7 +44,8 @@ const LoginScreen = () => {
 
     //Forget password Function
     const forgetPassword = () => {
-        if (email != null || email != '') {
+        console.log(email)
+        if (email != null && email != '') {
             firebase.auth().sendPasswordResetEmail(email)
             .then(() => {
                 alert('Password reset email sent');
