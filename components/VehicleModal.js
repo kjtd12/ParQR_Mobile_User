@@ -32,7 +32,7 @@ const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
   return (
   <Modal visible={visible} animationType="slide" onRequestClose={onBackdropPress} transparent={true}>
     <TouchableOpacity style={styles.backdrop} onPress={onBackdropPress} />
-      <KeyboardAvoidingView style={styles.modal}>
+      <KeyboardAvoidingView style={styles.modal} behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}>
         <Text style={styles.heading}>Create Vehicle</Text>
         <Text style={{ padding: 5 }}>Vehicle Type: </Text>
         <TextInput
