@@ -81,7 +81,6 @@ const LoginScreen = () => {
     return (
         <KeyboardAvoidingView
             style={styles.container}
-            behavior="padding"
         >
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Image 
