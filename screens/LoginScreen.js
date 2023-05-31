@@ -44,12 +44,16 @@ const LoginScreen = () => {
 
     //Forget password Function
     const forgetPassword = () => {
-        firebase.auth().sendPasswordResetEmail(email)
-        .then(() => {
-            alert('Password reset email sent');
-        }).catch((error) => {
-            alert(error)
-        })
+        if (email != null || email != '') {
+            firebase.auth().sendPasswordResetEmail(email)
+            .then(() => {
+                alert('Password reset email sent');
+            }).catch((error) => {
+                alert(error)
+            })
+        } else {
+            alert("Please enter email address on the email address field to reset password.")
+        }
     }
 
 
