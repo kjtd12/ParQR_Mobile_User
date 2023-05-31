@@ -39,13 +39,18 @@ const ProfileScreen = () => {
   });
 
   const handleSignout = () => {
+    if (auth.currentUser) {
       auth
-      .signOut()
-      .then(() => {
-          navigation.replace("Login")
-      })
-      .catch(error => alert(error.message))
+        .signOut()
+        .then(() => {
+          navigation.replace("Login");
+        })
+        .catch(error => alert(error.message));
+    } else {
+      navigation.replace("Login");
+    }
   };
+  
 
   const menuItems = [
     { id: '1', label: 'Edit Profile', description: 'Make changes to your profile', onPress: () => navigation.navigate('Profiles',{screen: 'Edit Profile'}), imagePath: require('../assets/profileIcons/EditProfile.png') },
