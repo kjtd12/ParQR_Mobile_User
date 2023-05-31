@@ -28,6 +28,7 @@ const MyWallet = () => {
   }, [])
 
   const renderListItem = ({ item }) => {
+
     return (
       <View style={styles.card}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -36,7 +37,7 @@ const MyWallet = () => {
           />
           <View>
             <Text style={[styles.cardDate, { color: '#606470' }]}>{moment(item.datetime, 'MM-DD-YYYYTHH:mm:ss').format('MMM DD, YYYY')}</Text>
-            <Text style={[styles.cardTime, { color: '#606470' }]}>{moment(item.datetime, 'MM-DD-YYYYTHH:mm:ss').format('hh:mm a')}</Text>
+            <Text style={[styles.cardTime, { color: '#606470' }]}>{item.datetime[1]}</Text>
           </View>
         </View>
         <Text style={[styles.cardAmount, { color: '#F3BB01' }]}>{`+₱${item.amount.toFixed(2)}`}</Text>

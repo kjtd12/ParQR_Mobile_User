@@ -150,7 +150,7 @@ const QrScreen = ({ navigation }) => {
             />
           </View>
           <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{data.name}</Text>
-          <View style={{ width: '60%' }}>
+          <View style={{ width: '60%', marginVertical: 20 }}>
             <Text style={{ color: 'gray', fontSize: 16 }}>Plate: {carPlate} {space}</Text>
             <Text style={{ color: 'gray', fontSize: 16 }}>Car Model: {carModel}</Text>
             <Text style={{ color: 'gray', fontSize: 16 }}>Car Color: {carColor}</Text>
