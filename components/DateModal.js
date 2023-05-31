@@ -41,7 +41,7 @@ const DateModal = ({ isVisible, onClose, onSubmit }) => {
     <Modal visible={isVisible} animationType="slide" transparent={true}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.1)' }}>
         <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20, width: '90%' }}>
-          <TouchableOpacity onPress={onClose} style={{ position: 'absolute', top: 10, right: 15, padding: 5 }}>
+          <TouchableOpacity onPress={onClose} style={{ position: 'absolute', top: 10, right: 15, padding: 10 }}>
             <Image
               source={require('../assets/transactionIcons/close.png')}
               style={{ width: 20, height: 20 }}

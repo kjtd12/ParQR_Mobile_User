@@ -19,13 +19,13 @@ const ParkingHistoryScreen = () => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [detailData, setDetailData] = useState([]);
 
-  function filterAndSortTransactions(parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate) {
+  function filterTransactions(parkingHistory, filterCurrentValue, startDate, endDate) {
     let filteredParkingHistory = [...parkingHistory];
-
-    if(filterCurrentValue !== 'custom') {
+  
+    if (filterCurrentValue !== 'custom') {
       setDateModalVisible(false);
     }
-    
+  
     switch (filterCurrentValue) {
       case 'today':
         filteredParkingHistory = filteredParkingHistory.filter((parkingHistory) => {
@@ -51,7 +51,6 @@ const ParkingHistoryScreen = () => {
         });
         break;
       case 'custom':
-        setDateModalVisible(true)
         filteredParkingHistory = filteredParkingHistory.filter((parkingHistory) => {
           const transactionDate = new Date(parkingHistory.start_time);
           const start = startDate ? new Date(startDate.setDate(startDate.getDate())) : '';
@@ -63,31 +62,38 @@ const ParkingHistoryScreen = () => {
         break;
     }
   
+    return filteredParkingHistory;
+  }
+  
+  function sortTransactions(parkingHistory, sortCurrentValue) {
+    let sortedParkingHistory = [...parkingHistory];
+  
     switch (sortCurrentValue) {
       case 'ascending':
-        filteredParkingHistory.sort((a, b) => a.operator_name.localeCompare(b.operator_name));
+        sortedParkingHistory.sort((a, b) => a.operator_name.localeCompare(b.operator_name));
         break;
       case 'descending':
-        filteredParkingHistory.sort((a, b) => b.operator_name.localeCompare(a.operator_name));
+        sortedParkingHistory.sort((a, b) => b.operator_name.localeCompare(a.operator_name));
         break;
       case 'newest':
-        filteredParkingHistory.sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
+        sortedParkingHistory.sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
         break;
       case 'oldest':
-        filteredParkingHistory.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+        sortedParkingHistory.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
         break;
       default:
         break;
     }
-    
-    return filteredParkingHistory;
+  
+    return sortedParkingHistory;
   }
-
+  
   useEffect(() => {
-    const filteredAndSortedTransactions = filterAndSortTransactions(parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate);
-    setFilteredParkingHistory(filteredAndSortedTransactions);
-  }, [parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate]);
-
+    const filteredTransactions = filterTransactions(parkingHistory, filterCurrentValue, startDate, endDate);
+    const sortedTransactions = sortTransactions(filteredTransactions, sortCurrentValue);
+    setFilteredParkingHistory(sortedTransactions);
+  }, [parkingHistory, filterCurrentValue, sortCurrentValue, startDate, endDate, setDateModalVisible]);  
+  
   const handleSubmit = (value1, value2) => {
     setStartDate(value1);
     setEndDate(value2);
