@@ -59,7 +59,7 @@ const QrScreen = ({ navigation }) => {
         setData(snapshot.data());
         const profilePicture = snapshot.get('profile_picture');
         setProfilePicture(profilePicture ? profilePicture : null);
-        const car = snapshot.data().vehicles.find((v) => v.isDefault);
+        const car = snapshot.data().vehicles?.find((v) => v.isDefault);
         setCarPlate(car ? car.plateNo : '');
         setCarModel(car ? car.vehicleModel : '');
         setCarColor(car ? car.color : '');
