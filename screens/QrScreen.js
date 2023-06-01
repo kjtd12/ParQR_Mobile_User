@@ -57,7 +57,8 @@ const QrScreen = ({ navigation }) => {
     const unsubscribe = userRef.onSnapshot((snapshot) => {
       if (snapshot.exists) {
         setData(snapshot.data());
-        setProfilePicture(snapshot.get('profile_picture'));
+        const profilePicture = snapshot.get('profile_picture');
+        setProfilePicture(profilePicture ? profilePicture : null);
         const car = snapshot.data().vehicles.find((v) => v.isDefault);
         setCarPlate(car ? car.plateNo : '');
         setCarModel(car ? car.vehicleModel : '');
