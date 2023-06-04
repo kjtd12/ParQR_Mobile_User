@@ -87,7 +87,7 @@ const ActivityScreen = () => {
           source={ require('../assets/Timer1.png') }
         />
         <Text style={{ color: '#213A5C', marginVertical: 20, fontSize: 36, fontWeight: 'bold' }}>{formatTime(elapsedTime)}</Text>
-        <Text style={{ color: 'gray' }}>Total Amount of Parking Fee: </Text>
+        <Text style={{ color: 'gray' }}>Total Amount of Parking Fee (Before discount):: </Text>
         <Text style={{ color: '#213A5C', marginVertical: 10, fontSize: 24, fontWeight: 'bold' }}>PHP {floatPrice}</Text>
       </View>
     );
@@ -100,7 +100,7 @@ const ActivityScreen = () => {
           source={ require('../assets/Timer1.png') }
         />
         <Text style={{ color: '#213A5C', marginVertical: 20, fontSize: 36, fontWeight: 'bold' }}>{formatTime(elapsedTime)}</Text>
-        <Text style={{ color: 'gray' }}>Total Amount of Parking Fee: </Text>
+        <Text style={{ color: 'gray' }}>Total Amount of Parking Fee (Before discount): </Text>
         <Text style={{ color: '#213A5C', marginVertical: 10, fontSize: 24, fontWeight: 'bold' }}>PHP {floatPrice}</Text>
     </View>
   );
