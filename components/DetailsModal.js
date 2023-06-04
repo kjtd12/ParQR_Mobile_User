@@ -34,6 +34,10 @@ const DetailsModal = ({ isVisible, onClose, item }) => {
                 <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#213A5C', padding: 20,  }}>Transfer from {item.number ? item.number : item.user_name} to ParQr Pay</Text>
                 <View>
                     <View style={styles.detailLine}>
+                        <Text style={styles.firstText}>Transaction Type</Text>
+                        <Text style={styles.secondText}>{item.user_name ? 'Top-up' : 'Parking'}</Text>
+                    </View>
+                    <View style={styles.detailLine}>
                         <Text style={styles.firstText}>Customers's Name</Text>
                         <Text style={styles.secondText}>{item.user_name}</Text>
                     </View>
