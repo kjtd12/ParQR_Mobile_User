@@ -58,6 +58,10 @@ const DetailsModal = ({ isVisible, onClose, item }) => {
                         <Text style={styles.secondText}>{durationText}</Text>
                     </View>
                     <View style={styles.detailLine}>
+                        <Text style={styles.firstText}>Discount</Text>
+                        <Text style={styles.secondText}>{item.discount}</Text>
+                    </View>
+                    <View style={styles.detailLine}>
                         <Text style={styles.firstText}>Amount</Text>
                         <Text style={styles.secondText}>{formattedPrice}</Text>
                     </View>
