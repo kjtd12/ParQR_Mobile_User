@@ -184,7 +184,7 @@ const QrScreen = ({ navigation }) => {
           <Text style={{ marginBottom: 10, color: 'gray'}}>operator</Text>
           <Text style={{ marginBottom: 10, fontSize: 16, color: '#213A5C' }}>Amount to be paid:</Text>
           <Text style={{ marginBottom: 20, fontSize: 16, color: '#213A5C' }}>Php {parseFloat(balance).toFixed(2)}</Text>
-          <TouchableOpacity style={{ backgroundColor: '#F3BB01', paddingVertical: 15, paddingHorizontal: 50, borderRadius: 5 }} onPress={handleClosePopUp}>
+          <TouchableOpacity style={{ backgroundColor: '#F3BB01', paddingVertical: 15, paddingHorizontal: 50, borderRadius: 5 }} onPress={() => {setPopUpisVisible(false)}}>
             <Text style={{ color: 'white', fontSize: 20 }}>Close</Text>
           </TouchableOpacity>
         </View>
