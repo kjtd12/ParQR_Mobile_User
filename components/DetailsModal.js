@@ -12,7 +12,7 @@ const DetailsModal = ({ isVisible, onClose, item }) => {
     const endTime = endTimeDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 
     const parsedPayment = parseInt(payment);
-    const formattedPrice = parsedPayment ? parsedPayment.toFixed(2) : 'N/A';
+    const formattedPrice = parsedPayment ? parsedPayment.toFixed(2) : '0';
 
     const durationInSeconds = (endTimeDate - startTimeDate) / 1000;
     const durationInMinutes = Math.floor(durationInSeconds / 60);
