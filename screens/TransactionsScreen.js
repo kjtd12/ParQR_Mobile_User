@@ -130,7 +130,7 @@ const ParkingHistoryScreen = () => {
     const date = new Date(start_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const startTime = new Date(start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     const endTime = new Date(start_time + duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    const formattedPrice = parseInt(payment) ? `${parseInt(payment).toFixed(2)} PHP` : 'N/A';
+    const formattedPrice = parseInt(payment) ? `${parseInt(payment).toFixed(2)} PHP` : '0.00';
   
     if (
       searchQuery &&
