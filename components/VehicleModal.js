@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, Modal, StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
   const [vehicleType, setVehicleType] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
   const [plateNo, setPlateNo] = useState('');
   const [color, setColor] = useState('');
+  const [vehicleTypeOpen, setVehicleTypeOpen] = useState(false);
 
   const handleSubmit = () => {
     if (vehicleType && vehicleModel && plateNo && color) {
@@ -22,8 +24,6 @@ const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
       setPlateNo('');
       setColor('');
     } else {
-      // Handle the case when any of the fields is empty
-      // You can show an error message or perform any other action
       alert('Please fill out the missing fields');
     }
   };
@@ -35,12 +35,25 @@ const VehicleModal = ({ visible, onBackdropPress, onSubmit }) => {
       <KeyboardAvoidingView style={styles.modal} behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}>
         <Text style={styles.heading}>Create Vehicle</Text>
         <Text style={{ padding: 5 }}>Vehicle Type: </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Vehicle Type Here..."
-          value={vehicleType}
-          onChangeText={setVehicleType}
-        />
+        <View style={{ position: "relative", zIndex: 10 }}>
+          <DropDownPicker
+                items={[ { label: 'Car', value: 'car' }, { label: 'Motorcycle', value: 'motorcycle' } ]}
+                defaultValue={'car'}
+                placeholder="Select Vehicle Type"
+                style={styles.input}
+                itemStyle={{
+                  justifyContent: 'flex-start'
+                }}
+                dropDownStyle={{ // add this to remove the default border of the DropDownPicker dropdown
+                    borderWidth: 0,
+                    color: '#213A5C',
+                }}
+                setValue={(value) => setVehicleType(value)}
+                value={vehicleType}
+                open={vehicleTypeOpen}
+                setOpen={setVehicleTypeOpen}
+              />
+        </View>
         <Text style={{ padding: 5 }}>Vehicle Model: </Text>
         <TextInput
           style={styles.input}
@@ -96,6 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+    borderWidth: 0,
   },
   button: {
     backgroundColor: '#213A5C',
