@@ -53,28 +53,60 @@ const ActivityScreen = () => {
   let initialPayment;
   let incrementalPayment;
 
+  const parkingRef = firebase.database().ref(`users/${userId}`);
+  const parkingTimeSnapshot = parkingRef.child('parking_time').once('value');
+  const parkingTimeData = parkingTimeSnapshot.val();
+
+  duration = (new Date().getTime() - parkingTimeData.start_time)/1000;
+      
+  const durationInHours = Math.ceil(duration / (60 * 60));
+  const durationInMinutes = Math.ceil((durationInHours % 3600) / 60);
+  let additionalHoursWithCostFree;
+
+  let paymentAmount = parseInt(initialPayment);
+
+  if (customerVal.vehicle_type == "motorcycle") {
+    paymentAmount = paymentAmount - motorcycleDeduct;
+  }
+
   paymentSettingsRef.once('value', (snapshot) => {
-    const parkingPaymentData = snapshot.val();
-    initialHours = parseInt(parkingPaymentData.initial_hours);
-    initialPayment = parseInt(parkingPaymentData.initial_payment);
-    incrementalPayment = parseInt(parkingPaymentData.incremental_payment);
+    const parkingSettingsData = snapshot.val();
 
-    let amountToPay = 0;
-    const ratePerHour = incrementalPayment;
-    const minimumCharge = initialPayment;
-
-    if (elapsedTime <= initialHours * 60 * 60 * 1000) {
-      if (elapsedTime === 0) {
-        amountToPay = 0;
-      } else {
-        amountToPay = minimumCharge;
+    if (discountType !== "none") {
+      const discountSettings = parkingSettingsData[discountType];
+    
+      additionalHoursWithCostFree = Math.max(Math.max(durationInHours - parseInt(discountSettings.costfree_amount), 0) - parseInt(initialHours), 0);
+    
+      if (duration == discountSettings.costfree_amount && durationInMinutes == 0) {
+        paymentAmount = parseInt(0);
       }
-    } else {
-      const extraTime = Math.floor((elapsedTime - initialHours * 60 * 60 * 1000) / (60 * 60 * 1000));
-      amountToPay = minimumCharge + (extraTime * ratePerHour);
-    }
+    
+      if (durationInHours <= discountSettings.costfree_amount) {
+        paymentAmount = 0;
+      } else if (additionalHoursWithCostFree === 0 && durationInMinutes > 0) {
+        paymentAmount = 30;
+      }
+    
+      if (additionalHoursWithCostFree > 0) {
+        paymentAmount += additionalHoursWithCostFree * parseInt(incrementalPayment);
+      }
+    
+      if (discountSettings) {
+        if (discountSettings.discount_by === 'Percentage') {
+          const discountPercentage = parseFloat(discountSettings.amount) / 100;
+          let discountablePaymentAmount = paymentAmount;
+          discountablePaymentAmount -= discountablePaymentAmount * discountPercentage;
+          paymentAmount = parseFloat(Math.max(discountablePaymentAmount, 0));
+        } else if (discountSettings.discount_by === 'Deduct') {
+          const discountAmount = parseFloat(discountSettings.amount);
+          let discountablePaymentAmount = paymentAmount;
+          discountablePaymentAmount -= discountAmount;
+          paymentAmount = parseFloat(Math.max(discountablePaymentAmount, 0));
+        }
+      }
+    } 
 
-    setFloatPrice(parseFloat(amountToPay).toFixed(2));
+    setFloatPrice(parseFloat(paymentAmount).toFixed(2));
   });
 
   let string = "Total Amount of Parking Fee"
