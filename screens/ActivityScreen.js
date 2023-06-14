@@ -54,7 +54,7 @@ const ActivityScreen = () => {
   let incrementalPayment;
   let motorcycleDeduct;
 
-  paymentSettingsRef.once('value', (snapshot) => {
+  paymentSettingsRef.on('value', (snapshot) => {
     const parkingPaymentData = snapshot.val();
     initialHours = parseInt(parkingPaymentData.initial_hours);
     initialPayment = parseInt(parkingPaymentData.initial_payment);
@@ -67,7 +67,7 @@ const ActivityScreen = () => {
     const parkingRef = firebase.database().ref(`users/${userId}/parking_time`);
     const customerRef = firebase.database().ref('activeCustomer/' + userId);
 
-    customerRef.once('value', async (snapshot) => {
+    customerRef.on('value', async (snapshot) => {
       const customerVal = snapshot.val();
 
       if (customerVal) {
@@ -85,7 +85,7 @@ const ActivityScreen = () => {
           const durationInMinutes = Math.ceil((durationInHours % 3600) / 60);
           let additionalHoursWithCostFree;
 
-          paymentSettingsRef.once('value', (snapshot) => {
+          paymentSettingsRef.on('value', (snapshot) => {
             const parkingSettingsData = snapshot.val();
 
             if (discountType !== "none") {
