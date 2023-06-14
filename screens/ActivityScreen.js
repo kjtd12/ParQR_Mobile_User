@@ -85,10 +85,6 @@ const ActivityScreen = () => {
           const durationInMinutes = Math.ceil((durationInHours % 3600) / 60);
           let additionalHoursWithCostFree;
 
-          if (customerVal.vehicle_type == "motorcycle") {
-            paymentAmount = paymentAmount - motorcycleDeduct;
-          }
-
           paymentSettingsRef.once('value', (snapshot) => {
             const parkingSettingsData = snapshot.val();
 
@@ -104,7 +100,11 @@ const ActivityScreen = () => {
               if (durationInHours <= discountSettings.costfree_amount) {
                 paymentAmount = 0;
               } else if (additionalHoursWithCostFree === 0 && durationInMinutes > 0) {
-                paymentAmount = 30;
+                paymentAmount = initialPayment;
+              }
+
+              if (customerVal.vehicle_type == "motorcycle") {
+                paymentAmount = paymentAmount - motorcycleDeduct;
               }
 
               if (additionalHoursWithCostFree > 0) {
@@ -129,7 +129,7 @@ const ActivityScreen = () => {
             setFloatPrice(parseFloat(paymentAmount).toFixed(2));
           });
         } else {
-          // Handle the case where parking time data is not available
+          setFloatPrice(0);
           console.log("Parking time data not found for user: ", userId);
         }
       }
