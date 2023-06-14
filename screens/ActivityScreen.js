@@ -134,10 +134,6 @@ const ActivityScreen = () => {
     });
   });
 
-
-
-  
-
   let string = "Total Amount of Parking Fee"
 
   if (!parkingTime) {
