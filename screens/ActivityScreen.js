@@ -52,6 +52,7 @@ const ActivityScreen = () => {
   let initialHours;
   let initialPayment;
   let incrementalPayment;
+  let motorcycleDeduct;
 
   const parkingRef = firebase.database().ref(`users/${userId}`);
   const parkingTimeSnapshot = parkingRef.child('parking_time').once('value');
