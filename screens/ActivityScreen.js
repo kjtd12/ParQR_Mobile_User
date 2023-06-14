@@ -150,7 +150,7 @@ const ActivityScreen = () => {
         />
         <Text style={{ color: '#213A5C', marginVertical: 20, fontSize: 36, fontWeight: 'bold' }}>{formatTime(elapsedTime)}</Text>
         <Text style={{ color: 'gray' }}>{string} </Text>
-        <Text style={{ color: '#213A5C', marginVertical: 10, fontSize: 24, fontWeight: 'bold' }}>PHP {floatPrice}</Text>
+        <Text style={{ color: '#213A5C', marginVertical: 10, fontSize: 24, fontWeight: 'bold' }}>PHP {0}</Text>
       </View>
     );
   }
