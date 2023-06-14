@@ -59,76 +59,84 @@ const ActivityScreen = () => {
     initialHours = parseInt(parkingPaymentData.initial_hours);
     initialPayment = parseInt(parkingPaymentData.initial_payment);
     incrementalPayment = parseInt(parkingPaymentData.incremental_payment);
-    motorcycleDeduct = parseInt(parkingPaymentData.motorcycle_deduct)
+    motorcycleDeduct = parseInt(parkingPaymentData.motorcycle_deduct);
     // Use the updated values of initialHours, initialPayment, and incrementalPayment within this listener if needed
-  });
 
-  let paymentAmount = parseInt(initialPayment);
+    let paymentAmount = parseInt(initialPayment);
 
-  const parkingRef = firebase.database().ref(`users/${userId}/parking_time`);
-  const customerRef = firebase.database().ref('activeCustomer/' + userId);
+    const parkingRef = firebase.database().ref(`users/${userId}/parking_time`);
+    const customerRef = firebase.database().ref('activeCustomer/' + userId);
 
-  customerRef.once('value', (snapshot) => {
-    const customerVal = snapshot.val();
+    customerRef.once('value', async (snapshot) => {
+      const customerVal = snapshot.val();
 
-    if(customerVal) {
-      parkingRef.once('value', (snapshot) => {
-        const parkingRefSnapshot = snapshot.val
-        duration = (new Date().getTime() - parkingRefSnapshot.start_time)/1000;
-          
-        const durationInHours = Math.ceil(duration / (60 * 60));
-        const durationInMinutes = Math.ceil((durationInHours % 3600) / 60);
-        let additionalHoursWithCostFree;
-    
-    
-        if (customerVal.vehicle_type == "motorcycle") {
-          paymentAmount = paymentAmount - motorcycleDeduct;
-        }
-    
-        paymentSettingsRef.once('value', (snapshot) => {
-          const parkingSettingsData = snapshot.val();
-    
-          if (discountType !== "none") {
-            const discountSettings = parkingSettingsData[discountType];
-          
-            additionalHoursWithCostFree = Math.max(Math.max(durationInHours - parseInt(discountSettings.costfree_amount), 0) - parseInt(initialHours), 0);
-          
-            if (duration == discountSettings.costfree_amount && durationInMinutes == 0) {
-              paymentAmount = parseInt(0);
-            }
-          
-            if (durationInHours <= discountSettings.costfree_amount) {
-              paymentAmount = 0;
-            } else if (additionalHoursWithCostFree === 0 && durationInMinutes > 0) {
-              paymentAmount = 30;
-            }
-          
-            if (additionalHoursWithCostFree > 0) {
-              paymentAmount += additionalHoursWithCostFree * parseInt(incrementalPayment);
-            }
-          
-            if (discountSettings) {
-              if (discountSettings.discount_by === 'Percentage') {
-                const discountPercentage = parseFloat(discountSettings.amount) / 100;
-                let discountablePaymentAmount = paymentAmount;
-                discountablePaymentAmount -= discountablePaymentAmount * discountPercentage;
-                paymentAmount = parseFloat(Math.max(discountablePaymentAmount, 0));
-              } else if (discountSettings.discount_by === 'Deduct') {
-                const discountAmount = parseFloat(discountSettings.amount);
-                let discountablePaymentAmount = paymentAmount;
-                discountablePaymentAmount -= discountAmount;
-                paymentAmount = parseFloat(Math.max(discountablePaymentAmount, 0));
+      if (customerVal) {
+        const parkingSnapshot = await parkingRef.once('value');
+        const parkingRefSnapshot = parkingSnapshot.val();
+
+        if (parkingRefSnapshot && parkingRefSnapshot.start_time) {
+          const discountRef = firebase.database().ref('activeCustomer/' + userId + '/discount');
+          const discountSnapshot = await discountRef.once('value');
+          const discountType = discountSnapshot.val();
+
+          const duration = (new Date().getTime() - parkingRefSnapshot.start_time) / 1000;
+
+          const durationInHours = Math.ceil(duration / (60 * 60));
+          const durationInMinutes = Math.ceil((durationInHours % 3600) / 60);
+          let additionalHoursWithCostFree;
+
+          if (customerVal.vehicle_type == "motorcycle") {
+            paymentAmount = paymentAmount - motorcycleDeduct;
+          }
+
+          paymentSettingsRef.once('value', (snapshot) => {
+            const parkingSettingsData = snapshot.val();
+
+            if (discountType !== "none") {
+              const discountSettings = parkingSettingsData[discountType];
+
+              additionalHoursWithCostFree = Math.max(Math.max(durationInHours - parseInt(discountSettings.costfree_amount), 0) - parseInt(initialHours), 0);
+
+              if (duration == discountSettings.costfree_amount && durationInMinutes == 0) {
+                paymentAmount = parseInt(0);
+              }
+
+              if (durationInHours <= discountSettings.costfree_amount) {
+                paymentAmount = 0;
+              } else if (additionalHoursWithCostFree === 0 && durationInMinutes > 0) {
+                paymentAmount = 30;
+              }
+
+              if (additionalHoursWithCostFree > 0) {
+                paymentAmount += additionalHoursWithCostFree * parseInt(incrementalPayment);
+              }
+
+              if (discountSettings) {
+                if (discountSettings.discount_by === 'Percentage') {
+                  const discountPercentage = parseFloat(discountSettings.amount) / 100;
+                  let discountablePaymentAmount = paymentAmount;
+                  discountablePaymentAmount -= discountablePaymentAmount * discountPercentage;
+                  paymentAmount = parseFloat(Math.max(discountablePaymentAmount, 0));
+                } else if (discountSettings.discount_by === 'Deduct') {
+                  const discountAmount = parseFloat(discountSettings.amount);
+                  let discountablePaymentAmount = paymentAmount;
+                  discountablePaymentAmount -= discountAmount;
+                  paymentAmount = parseFloat(Math.max(discountablePaymentAmount, 0));
+                }
               }
             }
-          } 
-    
-        })
-    
-        setFloatPrice(parseFloat(paymentAmount).toFixed(2));
-      });
-    }
 
-  })
+            setFloatPrice(parseFloat(paymentAmount).toFixed(2));
+          });
+        } else {
+          // Handle the case where parking time data is not available
+          console.log("Parking time data not found for user: ", userId);
+        }
+      }
+    });
+  });
+
+
 
   
 
