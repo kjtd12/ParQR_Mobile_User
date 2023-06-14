@@ -141,7 +141,6 @@ const ActivityScreen = () => {
   
 
   let string = "Total Amount of Parking Fee"
-  let string_1 = "(Before applicable discount)"
 
   if (!parkingTime) {
   
@@ -153,7 +152,6 @@ const ActivityScreen = () => {
         />
         <Text style={{ color: '#213A5C', marginVertical: 20, fontSize: 36, fontWeight: 'bold' }}>{formatTime(elapsedTime)}</Text>
         <Text style={{ color: 'gray' }}>{string} </Text>
-        <Text style={{ color: 'gray' }}>{string_1} </Text>
         <Text style={{ color: '#213A5C', marginVertical: 10, fontSize: 24, fontWeight: 'bold' }}>PHP {floatPrice}</Text>
       </View>
     );
@@ -167,7 +165,6 @@ const ActivityScreen = () => {
         />
         <Text style={{ color: '#213A5C', marginVertical: 20, fontSize: 36, fontWeight: 'bold' }}>{formatTime(elapsedTime)}</Text>
         <Text style={{ color: 'gray' }}>{string} </Text>
-        <Text style={{ color: 'gray' }}>{string_1} </Text>
         <Text style={{ color: '#213A5C', marginVertical: 10, fontSize: 24, fontWeight: 'bold' }}>PHP {floatPrice}</Text>
     </View>
   );
