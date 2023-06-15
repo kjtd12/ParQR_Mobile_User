@@ -122,6 +122,8 @@ const ActivityScreen = () => {
                   paymentAmount = parseFloat(Math.max(discountablePaymentAmount, 0));
                 }
               }
+            } else {
+              paymentAmount += (durationInHours - initialHours) * parseInt(incrementalPayment);
             }
 
             setFloatPrice(parseFloat(paymentAmount).toFixed(2));
