@@ -123,9 +123,11 @@ const ActivityScreen = () => {
                 }
               }
             } else {
+              if (customerVal.vehicle_type === "motorcycle") {
+                paymentAmount -= motorcycleDeduct;
+              }
               paymentAmount += (durationInHours - initialHours) * parseInt(incrementalPayment);
             }
-
             setFloatPrice(parseFloat(paymentAmount).toFixed(2));
           });
         } else {
